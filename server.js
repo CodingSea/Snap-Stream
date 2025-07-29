@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const methodOverride = require("method-override");
 const connectToDB = require("./config/db");
 const session = require("express-session");
+const bcrypt = require("bcrypt");
 
 const authRoutes = require("./routes/Auth.routes");
 
@@ -27,7 +28,12 @@ app.use
 
 connectToDB();
 
-app.use("/Auth", authRoutes);
+app.use("/auth", authRoutes);
+
+app.get("/", (req, res) =>
+{
+    res.render("home.ejs");
+});
 
 const port = process.env.PORT;
 app.listen(port, () =>

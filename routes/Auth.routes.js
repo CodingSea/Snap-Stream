@@ -64,7 +64,9 @@ router.post("/login", async (req, res) =>
         const validatePassword = bcrypt.compareSync(req.body.password, foundUser.password);
         if(foundUser && validatePassword)
         {
-            res.redirect("/");
+            req.session.userId = foundUser._id;
+            req.session.isLoggedIn = true;
+            res.redirect("/snap-stream/profile")
         }
         else
         {
@@ -76,5 +78,12 @@ router.post("/login", async (req, res) =>
         console.log(error);
     }
 });
+
+router.get("/logout", (req, res) =>
+{
+    req.session.destroy();
+    res.redirect("/");
+});
+
 
 module.exports = router;

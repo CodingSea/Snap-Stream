@@ -8,6 +8,7 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 
 const authRoutes = require("./routes/Auth.routes");
+const snapRoutes = require("./routes/SnapStream.routes");
 
 app.use(express.static("public"));
 app.use(express.urlencoded({extended: false}));
@@ -29,6 +30,7 @@ app.use
 connectToDB();
 
 app.use("/auth", authRoutes);
+app.use("/snap-stream", snapRoutes);
 
 app.get("/", (req, res) =>
 {

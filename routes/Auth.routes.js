@@ -12,26 +12,28 @@ router.post("/sign-up", async (req, res) =>
 {
     try
     {
-        const allUsers = await User.find();
-
         if(!validator.isEmail(req.body.email))
         {
             return res.send("Enter the full email correctly");
         }
 
-        allUsers.forEach((user) =>
+        const foundUserEmail = await User.find({email: req.body.email});
+        const foundUserUsername = await User.find({username: req.body.username});
+        if(foundUserEmail)
         {
-            if(user.username == req.body.username)
-            {
-                return res.send("username is taken, try entering a new username.");
-            }
-
-            if(user.email == req.body.email)
+            if(foundUserEmail.email == req.body.email)
             {
                 return res.send("email is taken, try entering a new email.");
             }
+        }
+        if(foundUserUsername)
+        {
+            if(foundUserUsername.username == req.body.username)
+            {
+                return res.send("username is taken, try entering a new username.");
+            }
+        }
 
-        });
 
         req.body.password = bcrypt.hashSync(req.body.password, 10);
     
@@ -47,6 +49,32 @@ router.post("/sign-up", async (req, res) =>
 router.get("/login", (req, res) =>
 {
     res.render("Auth/login.ejs");
+});
+
+router.post("/login", async (req, res) =>
+{
+    try
+    {
+        if(!validator.isEmail(req.body.email))
+        {
+            return res.send("Enter the full email correctly");
+        }
+
+        const foundUser = await User.findOne({email: req.body.email});
+        const validatePassword = bcrypt.compareSync(req.body.password, foundUser.password);
+        if(foundUser && validatePassword)
+        {
+            res.redirect("/");
+        }
+        else
+        {
+            res.send("email or password is inccorect");
+        }
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
 });
 
 module.exports = router;

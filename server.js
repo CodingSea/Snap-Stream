@@ -6,30 +6,51 @@ const methodOverride = require("method-override");
 const connectToDB = require("./config/db");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
+const isSignedIn = require("./middleware/isSignedIn");
+const passUserToView = require("./middleware/passUserToViewer");
 
 const authRoutes = require("./routes/Auth.routes");
 const snapRoutes = require("./routes/SnapStream.routes");
 
 app.use(express.static("public"));
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride("_method"));
 app.use(morgan("dev"));
 
 app.use
-(
-    session
     (
-        {
-            secret: process.env.SECRET_SESSION,
-            resave: false,
-            saveUninitialized: true,
-        }
-    )
-);
+        session
+            (
+                {
+                    secret: process.env.SECRET_SESSION,
+                    resave: false,
+                    saveUninitialized: true,
+                }
+            )
+    );
 
 connectToDB();
 
+app.use(passUserToView);
+
+// copied from the internet
+app.use((req, res, next) =>
+{
+    if (!req.session.history)
+    {
+        req.session.history = [];
+    }
+    
+    if (req.session.history[req.session.history.length - 1] !== req.originalUrl)
+    {
+        req.session.history.push(req.originalUrl);
+    }
+    next();
+});
+
 app.use("/auth", authRoutes);
+
+app.use(isSignedIn);
 app.use("/snap-stream", snapRoutes);
 
 app.get("/", (req, res) =>

@@ -6,7 +6,7 @@ const postSchema = new mongoose.Schema
         image: {type: String, required: true},
         content: String,
         comments: [String],
-        user: {type: mongoose.Types.ObjectId, ref: "User"}
+        user: {type: mongoose.Schema.Types.ObjectId, ref: "User"}
     }
 );
 

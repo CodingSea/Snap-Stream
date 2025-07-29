@@ -8,7 +8,8 @@ const userSchema = new mongoose.Schema
         password: { type: String, required: true },
         following: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
         followers: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
-        profileImage: String
+        profileImage: String,
+        role: {type:String, enum: ["user", "admin"], default: "user"}
     }
 );
 

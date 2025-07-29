@@ -38,6 +38,17 @@ router.post("/sign-up", async (req, res) =>
         req.body.password = bcrypt.hashSync(req.body.password, 10);
     
         const createdUser = await User.create(req.body);
+
+        req.session.userId = createdUser._id;
+        req.session.isLoggedIn = true;
+
+        req.session.user =
+        {
+            email: createdUser.email,
+            username: createdUser.username,
+            _id: createdUser._id
+        }
+
         res.redirect("/");
     }
     catch(error)
@@ -66,6 +77,14 @@ router.post("/login", async (req, res) =>
         {
             req.session.userId = foundUser._id;
             req.session.isLoggedIn = true;
+
+            req.session.user =
+            {
+                email: foundUser.email,
+                username: foundUser.username,
+                _id: foundUser._id
+            }
+
             res.redirect("/snap-stream/profile")
         }
         else

@@ -20,4 +20,9 @@ router.get("/profile", async (req, res) =>
     }
 });
 
+router.get("/new", (req, res) =>
+{
+    res.render("SnapStream/new.ejs");
+});
+
 module.exports = router;

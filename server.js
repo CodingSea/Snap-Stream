@@ -6,6 +6,8 @@ const methodOverride = require("method-override");
 const connectToDB = require("./config/db");
 const session = require("express-session");
 
+const authRoutes = require("./routes/Auth.routes");
+
 app.use(express.static("public"));
 app.use(express.urlencoded({extended: false}));
 app.use(methodOverride("_method"));
@@ -24,6 +26,8 @@ app.use
 );
 
 connectToDB();
+
+app.use("/Auth", authRoutes);
 
 const port = process.env.PORT;
 app.listen(port, () =>

@@ -7,20 +7,13 @@
     <link rel="stylesheet" href="/main.css">
 </head>
 <body>
+    <%- include("../partials/header") %>
     <%- include("../partials/tabs") %>
-
-    <header>
-        <a href="/snap-stream/new" class="addPost"><button>Add Post</button></a>
-    </header>
-
+    
     <div class="container">
         <% allPosts.forEach((post) => { %>
             <div class="post">
                 <img src="/images/person.png" alt="post-image">
-                <a href="/snap-stream/profile/<%= post._id %>"><button>Edit Post</button></a>
-                <form action="/snap-stream/profile/<%= post._id %>?_method=DELETE" method="post">
-                    <button type="submit">Delete Post</button>
-                </form>
             </div>
         <% }); %>
     </div>

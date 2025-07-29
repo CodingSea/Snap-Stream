@@ -12,8 +12,9 @@ router.get("/profile", async (req, res) =>
         }
 
         const foundUser = await User.findById(req.session.userId);
+        const allPosts = await Post.find({user: req.session.userId});
 
-        res.render("SnapStream/profile.ejs", {foundUser});
+        res.render("SnapStream/profile.ejs", {foundUser, allPosts});
     }
     catch(error)
     {
@@ -50,5 +51,71 @@ router.post("/new", async (req, res) =>
         console.log(error);
     }
 });
+
+router.get("/search", async (req, res) =>
+{
+    try
+    {
+        const allPosts = await Post.find();
+        res.render("SnapStream/search.ejs", {foundUser: req.session.user, allPosts});
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
+router.delete("/profile/:id", async (req, res) => 
+{
+    try
+    {
+        await Post.findByIdAndDelete(req.params.id);
+        res.redirect("/snap-stream/profile");
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
+router.get("/profile/:id", async (req, res) =>
+{
+    try
+    {
+        const foundPost = await Post.findById(req.params.id);
+        res.render("SnapStream/edit.ejs", {foundPost});
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
+router.put("/profile/:id", async (req, res) => 
+{
+    try
+    {
+        const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body);
+        res.redirect("/snap-stream/profile");
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
+router.delete("/profile/:id", async (req, res) => 
+{
+    try
+    {
+        await Post.findByIdAndDelete(req.params.id);
+        res.redirect("/snap-stream/profile");
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
 
 module.exports = router;

@@ -13,20 +13,16 @@ body
     margin: -1px;
 }
 
-.header-container
-{
-    position: relative;
-    border: 1px solid black;
-}
-
 header
 {
-    margin: -1px;
-    margin-top: 0.5em;
-    width: 80%;
     position: absolute;
+    border: 1px solid black;
+    width: 80%;
     right: 0%;
     text-align: center;
+    margin: -1px;
+    top: 0;
+    z-index: 1;
 }
 
 .addPost
@@ -34,4 +30,34 @@ header
     right: 0;
     margin-right: 2em;
     float: right;
+}
+
+.container
+{
+    position: absolute;
+    border: 1px solid black;
+    width: 80%;
+    right: 0%;
+    text-align: center;
+    margin: -1px;
+    top: 0;
+    z-index: 0;
+    margin-top: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.post
+{
+    background-color: rgb(54, 54, 54);
+    width: 200px;
+    height: 200px;
+    
+}
+
+.post img
+{
+    width: 200px;
+    height: 200px;
 }

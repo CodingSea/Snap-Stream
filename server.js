@@ -31,8 +31,6 @@ app.use
 
 connectToDB();
 
-app.use(passUserToView);
-
 // copied from the internet
 app.use((req, res, next) =>
 {
@@ -40,7 +38,7 @@ app.use((req, res, next) =>
     {
         req.session.history = [];
     }
-    
+
     if (req.session.history[req.session.history.length - 1] !== req.originalUrl)
     {
         req.session.history.push(req.originalUrl);
@@ -48,15 +46,19 @@ app.use((req, res, next) =>
     next();
 });
 
+app.get("/", (req, res) =>
+{
+    res.render("home.ejs");
+});
+app.use("/snap-stream", snapRoutes);
+
+app.use(passUserToView);
+
 app.use("/auth", authRoutes);
 
 app.use(isSignedIn);
 app.use("/snap-stream", snapRoutes);
 
-app.get("/", (req, res) =>
-{
-    res.render("home.ejs");
-});
 
 const port = process.env.PORT;
 app.listen(port, () =>

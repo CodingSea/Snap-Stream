@@ -49,7 +49,7 @@ router.post("/sign-up", async (req, res) =>
             _id: createdUser._id
         }
 
-        res.redirect("/");
+        res.redirect("/snap-stream/profile");
     }
     catch(error)
     {
@@ -102,6 +102,11 @@ router.get("/logout", (req, res) =>
 {
     req.session.destroy();
     res.redirect("/");
+});
+
+router.get("/guest", (req, res) =>
+{
+    res.redirect("/snap-stream/search");
 });
 
 

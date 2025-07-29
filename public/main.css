@@ -1,5 +1,37 @@
+body
+{
+    padding: 0;
+    margin: 0;
+}
+
 .tabsContainer
 {
     border: 1px solid black;
-    background: red;
+    width: 20%;
+    height: 100vh;
+    display: block;
+    margin: -1px;
+}
+
+.header-container
+{
+    position: relative;
+    border: 1px solid black;
+}
+
+header
+{
+    margin: -1px;
+    margin-top: 0.5em;
+    width: 80%;
+    position: absolute;
+    right: 0%;
+    text-align: center;
+}
+
+.addPost
+{
+    right: 0;
+    margin-right: 2em;
+    float: right;
 }

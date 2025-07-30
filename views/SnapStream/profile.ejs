@@ -16,11 +16,9 @@
     <div class="container">
         <% allPosts.forEach((post) => { %>
             <div class="post">
+                <a href="/snap-stream/<%= post._id %>">
                 <img src="/images/person.png" alt="post-image">
-                <a href="/snap-stream/profile/<%= post._id %>"><button>Edit Post</button></a>
-                <form action="/snap-stream/profile/<%= post._id %>?_method=DELETE" method="post">
-                    <button type="submit">Delete Post</button>
-                </form>
+                </a>
             </div>
         <% }); %>
     </div>

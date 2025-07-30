@@ -2,6 +2,7 @@ body
 {
     padding: 0;
     margin: 0;
+    display: inline;
 }
 
 .tabsContainer
@@ -9,15 +10,15 @@ body
     border: 1px solid black;
     width: 20%;
     height: 100vh;
-    display: block;
     margin: -1px;
+    float: left;
 }
 
 header
 {
-    position: absolute;
     border: 1px solid black;
     width: 80%;
+    float: right;
     right: 0%;
     text-align: center;
     margin: -1px;
@@ -34,15 +35,15 @@ header
 
 .container
 {
-    position: absolute;
     border: 1px solid black;
-    width: 80%;
+    width: 75%;
     right: 0%;
     text-align: center;
-    margin: -1px;
+    margin: -1%;
     top: 0;
     z-index: 0;
     margin-top: 1em;
+    margin: auto;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;

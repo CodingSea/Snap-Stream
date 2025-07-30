@@ -65,7 +65,7 @@ router.get("/search", async (req, res) =>
     }
 });
 
-router.delete("/profile/:id", async (req, res) => 
+router.delete("/:id", async (req, res) => 
 {
     try
     {
@@ -78,44 +78,72 @@ router.delete("/profile/:id", async (req, res) =>
     }
 });
 
-router.get("/profile/:id", async (req, res) =>
+router.get("/:id", async (req, res) =>
+{
+    try
+    {
+        const foundPost = await Post.findById(req.params.id).populate("user").populate("comments.user");
+        const isUserPost = foundPost.user._id == req.session.user._id;
+        res.render("SnapStream/post-details.ejs", {foundPost, isUserPost});
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
+router.put("/:id", async (req, res) => 
+{
+    try
+    {
+        const updatedPost = await Post.findById(req.params.id);
+        const comment = 
+        {
+            user: req.session.user.id,
+            content: req.body.content
+        }
+        updatedPost.comments.push(comment);
+        res.redirect("/snap-stream/profile");
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
+/*
+router.delete("/profile/:id", async (req, res) => 
+{
+    try
+    {
+        await Post.findByIdAndDelete(req.params.id).populate("Comment");
+        res.redirect("/snap-stream/profile");
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});*/
+
+router.post("/:id/comment", async (req, res) =>
 {
     try
     {
         const foundPost = await Post.findById(req.params.id);
-        res.render("SnapStream/edit.ejs", {foundPost});
+        const comment = 
+        {
+            user: req.session.userId,
+            content: req.body.content
+        }
+        console.log(comment)
+        foundPost.comments.push(comment);
+        foundPost.save();
+        res.redirect("/snap-stream/" + req.params.id);
     }
     catch(error)
     {
         console.log(error);
     }
 });
-
-router.put("/profile/:id", async (req, res) => 
-{
-    try
-    {
-        const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body);
-        res.redirect("/snap-stream/profile");
-    }
-    catch(error)
-    {
-        console.log(error);
-    }
-});
-
-router.delete("/profile/:id", async (req, res) => 
-{
-    try
-    {
-        await Post.findByIdAndDelete(req.params.id);
-        res.redirect("/snap-stream/profile");
-    }
-    catch(error)
-    {
-        console.log(error);
-    }
-});
-
 
 module.exports = router;

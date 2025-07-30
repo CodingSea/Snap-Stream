@@ -29,7 +29,7 @@ async function handleUpload(file)
 
 let lastPage;
 
-router.get("/profile", isSignedIn, async (req, res) =>
+router.get("/profile/:id", isSignedIn, async (req, res) =>
 {
     try
     {
@@ -38,10 +38,10 @@ router.get("/profile", isSignedIn, async (req, res) =>
             return res.redirect("/");
         }
 
-        const foundUser = await User.findById(req.session.userId);
-        const allPosts = await Post.find({ user: req.session.userId });
+        const foundUser = await User.findById(req.params.id);
+        const allPosts = await Post.find({ user: req.params.id });
 
-        lastPage = "/snap-stream/profile";
+        lastPage = "/snap-stream/profile/" + req.params.id;
         res.render("SnapStream/profile.ejs", { foundUser, allPosts });
     }
     catch (error)
@@ -65,7 +65,6 @@ router.post("/new", upload.single("image"), async (req, res) =>
         const b64 = Buffer.from(req.file.buffer).toString("base64");
         let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
         const cldRes = await handleUpload(dataURI);
-        console.log(cldRes);
         
         const post =
         {
@@ -107,7 +106,7 @@ router.delete("/:id", async (req, res) =>
     try
     {
         await Post.findByIdAndDelete(req.params.id);
-        res.redirect("/snap-stream/profile");
+        res.redirect("/snap-stream/profile/" + req.session.user._id);
     }
     catch (error)
     {
@@ -126,7 +125,7 @@ router.get("/:id", async (req, res) =>
             isUserPost = foundPost.user._id == req.session.user._id;
         }
         const isLiked = foundPost.likes.includes(req.session.userId);
-        res.render("SnapStream/edit.ejs", { foundPost, isUserPost, isLiked });
+        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isLiked });
     }
     catch (error)
     {
@@ -194,7 +193,14 @@ router.post("/:id/like", async (req, res) =>
 
 router.post("/back", (req, res) =>
 {
-    res.redirect(lastPage);
+    if(lastPage == undefined)
+    {
+        res.redirect("/");
+    }
+    else
+    { 
+        res.redirect(lastPage);
+    }
 });
 
 module.exports = router;

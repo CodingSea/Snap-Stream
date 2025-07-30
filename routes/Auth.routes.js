@@ -49,7 +49,7 @@ router.post("/sign-up", async (req, res) =>
             _id: createdUser._id
         }
 
-        res.redirect("/snap-stream/profile");
+        res.redirect("/snap-stream/profile/" + req.session.user._id);
     }
     catch(error)
     {
@@ -85,7 +85,7 @@ router.post("/login", async (req, res) =>
                 _id: foundUser._id
             }
 
-            res.redirect("/snap-stream/profile")
+            res.redirect("/snap-stream/profile/" + req.session.user._id);
         }
         else
         {

@@ -28,9 +28,9 @@
 
         <form action="/snap-stream/<%= foundPost._id %>/like" method="post">
             <% if(isLiked) { %>
-                <button type="submit" style="background: none; border: none; color: red;">♥ <%= foundPost.likes.length %></button>
+                <button type="submit" style="background: none; border: none; color: red; font-size: 2em;">♥ <%= foundPost.likes.length %></button>
             <% } else { %>
-                <button type="submit" style="background: none; border: none;">♡ <%= foundPost.likes.length %></button>
+                <button type="submit" style="background: none; border: none; font-size: 2em;">♡ <%= foundPost.likes.length %></button>
             <% } %>
         </form>
 
@@ -44,7 +44,7 @@
         </form>
     <% } else { %>
         <p>Content: <%= foundPost.content %></p>
-        <button type="submit" style="background: none; border: none; color: black;" disabled>♡ <%= foundPost.likes.length %></button>
+        <button type="submit" style="background: none; border: none; color: black; font-size: 2em;" disabled>♡ <%= foundPost.likes.length %></button>
 
     <% } %>
 

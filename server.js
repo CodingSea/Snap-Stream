@@ -82,3 +82,8 @@ app.listen(port, () =>
 // signup [x]
 // login [x]
 // logout [x]
+// improve validation UX and UI
+
+// remove commented code
+// remove consoles
+// remove divs borders

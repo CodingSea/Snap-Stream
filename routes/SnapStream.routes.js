@@ -3,6 +3,8 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 const isSignedIn = require("../middleware/isSignedIn");
 
+let lastPage;
+
 router.get("/profile", async (req, res) =>
 {
     try
@@ -15,6 +17,7 @@ router.get("/profile", async (req, res) =>
         const foundUser = await User.findById(req.session.userId);
         const allPosts = await Post.find({user: req.session.userId});
 
+        lastPage = "/snap-stream/profile";
         res.render("SnapStream/profile.ejs", {foundUser, allPosts});
     }
     catch(error)
@@ -44,6 +47,7 @@ router.post("/new", async (req, res) =>
         // the go to last page is taken from the internet
         req.session.history.pop();
         const previousPage = req.session.history[req.session.history.length - 1];
+        lastPage = "/snap-stream/new";
         res.redirect(previousPage);
         
     }
@@ -58,6 +62,7 @@ router.get("/search", async (req, res) =>
     try
     {
         const allPosts = await Post.find();
+        lastPage = "/snap-stream/search";
         res.render("SnapStream/search.ejs", {foundUser: req.session.user, allPosts});
     }
     catch(error)
@@ -154,6 +159,11 @@ router.post("/:id/like", async (req, res) =>
     {
         console.log(error);
     }
+});
+
+router.post("/back", (req,res) =>
+{
+    res.redirect(lastPage);
 });
 
 module.exports = router;

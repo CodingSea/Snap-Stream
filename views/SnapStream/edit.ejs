@@ -6,6 +6,10 @@
     <title>Document</title>
 </head>
 <body>
+    <form action="/snap-stream/back" method="post">
+        <button type="submit">Back</button>
+    </form>
+
     <h1><%= foundPost.user.username %></h1>
 
     <% if(isUserPost) { %>
@@ -22,11 +26,10 @@
         <br>
 
         <form action="/snap-stream/<%= foundPost._id %>/like" method="post">
-            <label for="like">Likes: <%= foundPost.likes.length %></label>
             <% if(isLiked) { %>
-                <button type="submit" style="background: none; border: none; color: red;">♥</button>
+                <button type="submit" style="background: none; border: none; color: red;">♥ <%= foundPost.likes.length %></button>
             <% } else { %>
-                <button type="submit" style="background: none; border: none;">♡</button>
+                <button type="submit" style="background: none; border: none;">♡ <%= foundPost.likes.length %></button>
             <% } %>
         </form>
 
@@ -40,7 +43,8 @@
         </form>
     <% } else { %>
         <p>Content: <%= foundPost.content %></p>
-        <label for="like">Likes: <%= foundPost.likes.length %></label>
+        <button type="submit" style="background: none; border: none; color: black;" disabled>♡ <%= foundPost.likes.length %></button>
+
     <% } %>
 
     

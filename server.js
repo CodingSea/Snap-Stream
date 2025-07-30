@@ -8,6 +8,7 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const isSignedIn = require("./middleware/isSignedIn");
 const passUserToView = require("./middleware/passUserToViewer");
+const cloudinary = require('cloudinary').v2;
 
 const authRoutes = require("./routes/Auth.routes");
 const snapRoutes = require("./routes/SnapStream.routes");
@@ -28,6 +29,13 @@ app.use
                 }
             )
     );
+
+cloudinary.config
+({ 
+    cloud_name: process.env.CLOUDINARY_NAME, 
+    api_key: process.env.CLOUDINARY_KEY, 
+    api_secret: process.env.CLOUDINARY_SECRET
+});
 
 connectToDB();
 
@@ -66,10 +74,11 @@ app.listen(port, () =>
     console.log("listening to port " + port);
 });
 
-// users page (view and search)
-// profile page
+// users page (view and search) [x]
+// profile page [x]
 // homepage (posts from following users)
+// settings
 
-// signup
-// login
-// logout
+// signup [x]
+// login [x]
+// logout [x]

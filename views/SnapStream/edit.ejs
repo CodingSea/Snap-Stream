@@ -11,6 +11,7 @@
     </form>
 
     <h1><%= foundPost.user.username %></h1>
+    <img src="<%= foundPost.image %>">
 
     <% if(isUserPost) { %>
         <form action="/snap-stream/<%= foundPost._id %>?/edit_method=PUT" method="post">

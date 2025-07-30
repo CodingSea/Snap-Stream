@@ -111,25 +111,6 @@ router.put("/:id/edit", async (req, res) =>
     }
 });
 
-router.put("/:id/comment", async (req, res) => 
-{
-    try
-    {
-        const updatedPost = await Post.findById(req.params.id);
-        const comment = 
-        {
-            user: req.session.user.id,
-            content: req.body.content
-        }
-        updatedPost.comments.push(comment);
-        res.redirect("/snap-stream/" + req.params.id);
-    }
-    catch(error)
-    {
-        console.log(error);
-    }
-});
-
 router.post("/:id/comment", async (req, res) =>
 {
     try
@@ -140,7 +121,6 @@ router.post("/:id/comment", async (req, res) =>
             user: req.session.userId,
             content: req.body.content
         }
-        console.log(comment)
         foundPost.comments.push(comment);
         await foundPost.save();
         res.redirect("/snap-stream/" + req.params.id);

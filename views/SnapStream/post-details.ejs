@@ -6,22 +6,36 @@
     <title>Document</title>
 </head>
 <body>
+    <h1><%= foundPost.user.username %></h1>
     <img src="<%= foundPost.image %>" alt="post image">
-    <p>Content: <%= foundPost.content %></p>
 
     <% if(isUserPost) { %>
+        <form action="/snap-stream/<%= foundPost._id %>?_method=PUT" method="post">
+            <label for="content">Content: </label>
+            <input type="text" name="content" value="<%= foundPost.content %>">
+            
+            <button type="submit">Update Content</button>
+        </form>
+        <br>
         <form action="/snap-stream/<%= foundPost._id %>?_method=DELETE" method="post">
             <button type="submit">Delete Post</button>
         </form>
         <br>
+
+        <label for="like">Likes: </label>
+        <input type="checkbox" name="like">
+
+        <form action="/snap-stream/<%= foundPost._id %>/comment" method="post">
+            <label for="content">Comment: </label>
+            <input type="text" name="content">
+
+            <button type="submit">Submit</button>
+        </form>
+    <% } else { %>
+        <p>Content: <%= foundPost.content %></p>
     <% } %>
 
-    <form action="/snap-stream/<%= foundPost._id %>/comment" method="post">
-        <label for="content">Comment: </label>
-        <input type="text" name="content">
-
-        <button type="submit">Submit</button>
-    </form>
+    
 
     <% foundPost.comments.forEach((comment) => { %>
         <div class="comment">

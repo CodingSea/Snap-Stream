@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
+const isSignedIn = require("../middleware/isSignedIn");
 
 router.get("/profile", async (req, res) =>
 {
@@ -22,7 +23,7 @@ router.get("/profile", async (req, res) =>
     }
 });
 
-router.get("/new", (req, res) =>
+router.get("/new", isSignedIn, (req, res) =>
 {
     res.render("SnapStream/new.ejs");
 });
@@ -83,7 +84,11 @@ router.get("/:id", async (req, res) =>
     try
     {
         const foundPost = await Post.findById(req.params.id).populate("user").populate("comments.user");
-        const isUserPost = foundPost.user._id == req.session.user._id;
+        let isUserPost = false;
+        if(req.session.user)
+        {
+            isUserPost = foundPost.user._id == req.session.user._id;
+        }
         res.render("SnapStream/post-details.ejs", {foundPost, isUserPost});
     }
     catch(error)
@@ -96,14 +101,8 @@ router.put("/:id", async (req, res) =>
 {
     try
     {
-        const updatedPost = await Post.findById(req.params.id);
-        const comment = 
-        {
-            user: req.session.user.id,
-            content: req.body.content
-        }
-        updatedPost.comments.push(comment);
-        res.redirect("/snap-stream/profile");
+        const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body);
+        res.redirect("/snap-stream/" + req.params.id);
     }
     catch(error)
     {
@@ -111,19 +110,24 @@ router.put("/:id", async (req, res) =>
     }
 });
 
-/*
-router.delete("/profile/:id", async (req, res) => 
+router.put("/:id/comment", async (req, res) => 
 {
     try
     {
-        await Post.findByIdAndDelete(req.params.id).populate("Comment");
-        res.redirect("/snap-stream/profile");
+        const updatedPost = await Post.findById(req.params.id);
+        const comment = 
+        {
+            user: req.session.user.id,
+            content: req.body.content
+        }
+        updatedPost.comments.push(comment);
+        res.redirect("/snap-stream/" + req.params.id);
     }
     catch(error)
     {
         console.log(error);
     }
-});*/
+});
 
 router.post("/:id/comment", async (req, res) =>
 {

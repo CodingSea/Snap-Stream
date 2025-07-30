@@ -7,10 +7,9 @@
 </head>
 <body>
     <h1><%= foundPost.user.username %></h1>
-    
 
     <% if(isUserPost) { %>
-        <form action="/snap-stream/<%= foundPost._id %>?_method=PUT" method="post">
+        <form action="/snap-stream/<%= foundPost._id %>?/edit_method=PUT" method="post">
             <label for="content">Content: </label>
             <input type="text" name="content" value="<%= foundPost.content %>">
             

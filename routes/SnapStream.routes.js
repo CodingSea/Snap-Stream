@@ -90,7 +90,7 @@ router.get("/:id", async (req, res) =>
             isUserPost = foundPost.user._id == req.session.user._id;
         }
         const isLiked = foundPost.likes.includes(req.session.userId);
-        res.render("SnapStream/post-details.ejs", {foundPost, isUserPost, isLiked});
+        res.render("SnapStream/edit.ejs", {foundPost, isUserPost, isLiked});
     }
     catch(error)
     {
@@ -98,7 +98,7 @@ router.get("/:id", async (req, res) =>
     }
 });
 
-router.put("/:id", async (req, res) => 
+router.put("/:id/edit", async (req, res) => 
 {
     try
     {

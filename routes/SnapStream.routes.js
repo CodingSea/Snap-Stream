@@ -150,4 +150,19 @@ router.post("/:id/comment", async (req, res) =>
     }
 });
 
+router.post("/:id/like", async (req, res) =>
+{
+    try
+    {
+        const foundPost = await Post.findById(req.params.id);
+        foundPost.likes.push(req.session.userId);
+        foundPost.save();
+        res.redirect("/snap-stream/" + req.params.id);
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
 module.exports = router;

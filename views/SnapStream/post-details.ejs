@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1><%= foundPost.user.username %></h1>
-    <img src="<%= foundPost.image %>" alt="post image">
+    
 
     <% if(isUserPost) { %>
         <form action="/snap-stream/<%= foundPost._id %>?_method=PUT" method="post">
@@ -22,8 +22,12 @@
         </form>
         <br>
 
-        <label for="like">Likes: </label>
-        <input type="checkbox" name="like">
+        <form action="/snap-stream/<%= foundPost._id %>/like" method="post">
+            <label for="like">Likes: <%= foundPost.likes.length %></label>
+            <button type="submit">Like</button>
+        </form>
+
+        <br>
 
         <form action="/snap-stream/<%= foundPost._id %>/comment" method="post">
             <label for="content">Comment: </label>
@@ -33,6 +37,7 @@
         </form>
     <% } else { %>
         <p>Content: <%= foundPost.content %></p>
+        <label for="like">Likes: <%= foundPost.likes.length %></label>
     <% } %>
 
     

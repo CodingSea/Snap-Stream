@@ -29,7 +29,7 @@ async function handleUpload(file)
 
 let lastPage;
 
-router.get("/profile", async (req, res) =>
+router.get("/profile", isSignedIn, async (req, res) =>
 {
     try
     {

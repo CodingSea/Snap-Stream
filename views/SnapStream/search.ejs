@@ -14,7 +14,7 @@
         <% allPosts.forEach((post) => { %>
             <a href="/snap-stream/<%= post._id %>">
             <div class="post">
-                <img src="/images/person.png" alt="post-image">
+                <img src="<%= post.image %>" alt="post-image">
             </div>
             </a>
         <% }); %>

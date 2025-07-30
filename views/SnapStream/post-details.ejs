@@ -24,7 +24,11 @@
 
         <form action="/snap-stream/<%= foundPost._id %>/like" method="post">
             <label for="like">Likes: <%= foundPost.likes.length %></label>
-            <button type="submit">Like</button>
+            <% if(isLiked) { %>
+                <button type="submit" style="background: none; border: none; color: red;">♥</button>
+            <% } else { %>
+                <button type="submit" style="background: none; border: none;">♡</button>
+            <% } %>
         </form>
 
         <br>

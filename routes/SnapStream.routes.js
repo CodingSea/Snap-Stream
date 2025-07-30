@@ -89,7 +89,8 @@ router.get("/:id", async (req, res) =>
         {
             isUserPost = foundPost.user._id == req.session.user._id;
         }
-        res.render("SnapStream/post-details.ejs", {foundPost, isUserPost});
+        const isLiked = foundPost.likes.includes(req.session.userId);
+        res.render("SnapStream/post-details.ejs", {foundPost, isUserPost, isLiked});
     }
     catch(error)
     {
@@ -141,7 +142,7 @@ router.post("/:id/comment", async (req, res) =>
         }
         console.log(comment)
         foundPost.comments.push(comment);
-        foundPost.save();
+        await foundPost.save();
         res.redirect("/snap-stream/" + req.params.id);
     }
     catch(error)
@@ -155,8 +156,18 @@ router.post("/:id/like", async (req, res) =>
     try
     {
         const foundPost = await Post.findById(req.params.id);
-        foundPost.likes.push(req.session.userId);
-        foundPost.save();
+
+        if(foundPost.likes.includes(req.session.userId))
+        {
+            foundPost.likes.pop(req.session.userId);
+            foundPost.save();
+        }
+        else
+        {
+            foundPost.likes.push(req.session.userId);
+            foundPost.save();
+        }
+        
         res.redirect("/snap-stream/" + req.params.id);
     }
     catch(error)

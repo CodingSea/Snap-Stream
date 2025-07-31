@@ -16,8 +16,8 @@
 
     <% if(foundUser.email != currentUser.email) { %>
         <div class="other-profile">
-            <% if(foundUser.image) {%>
-                <img src="<%= foundUser.image %>">
+            <% if(foundUser.profileImage) {%>
+                <img src="<%= foundUser.profileImage %>">
             <% } else { %>
                 <img src="/images/person.png">
             <% } %>

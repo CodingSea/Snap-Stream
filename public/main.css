@@ -82,6 +82,7 @@ header
 .other-profile img
 {
     width: 150px;
+    padding: 1em;
     margin: 0 auto;
 }
 
@@ -89,4 +90,22 @@ header
 {
     margin-top: 1em;
     margin-left: 5em;
+}
+
+.post-details 
+{
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    align-items: center;
+    justify-content: left;    
+}
+
+.post-details img
+{
+    width: 100%;
+}
+
+.post-details a
+{
+    margin-left: 0.5em;
 }

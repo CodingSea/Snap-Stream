@@ -14,6 +14,18 @@
         <a href="/snap-stream/new" class="addPost"><button>Add Post</button></a>
     </header>
 
+    <% if(foundUser.email != currentUser.email) { %>
+        <div class="other-profile">
+            <% if(foundUser.image) {%>
+                <img src="<%= foundUser.image %>">
+            <% } else { %>
+                <img src="/images/person.png">
+            <% } %>
+
+            <h1><%= foundUser.username %></h1>
+        </div>
+    <% } %>
+
     <div class="container">
         <% allPosts.forEach((post) => { %>
             <div class="post">

@@ -38,11 +38,12 @@ router.get("/profile/:id", isSignedIn, async (req, res) =>
             return res.redirect("/");
         }
 
+        const currentUser = await User.findById(req.session.user._id);
         const foundUser = await User.findById(req.params.id);
         const allPosts = await Post.find({ user: req.params.id });
 
         lastPage = "/snap-stream/profile/" + req.params.id;
-        res.render("SnapStream/profile.ejs", { foundUser, allPosts });
+        res.render("SnapStream/profile.ejs", { foundUser, allPosts, currentUser });
     }
     catch (error)
     {
@@ -104,8 +105,9 @@ router.get("/search", async (req, res) =>
     try
     {
         const allPosts = await Post.find();
+        const currentUser = await User.findById(req.session.user._id);
         lastPage = "/snap-stream/search";
-        res.render("SnapStream/search.ejs", { foundUser: req.session.user, allPosts });
+        res.render("SnapStream/search.ejs", { foundUser: req.session.user, allPosts, currentUser });
     }
     catch (error)
     {

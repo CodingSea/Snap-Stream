@@ -1,12 +1,14 @@
 <div class="tabsContainer">
     <% if(foundUser){ %>
-        <h1><%= foundUser.username %></h1>
+        <h1><%= currentUser.username %></h1>
     <% } %>
     <img src="/images/person.png" width="200px" height="200px" alt="post-image">
     <br>
     <a href="/snap-stream/profile"><button>Profile</button></a>
     <a href="/snap-stream/search"><button>Search</button></a>
     <a href="/snap-stream/home"><button>Home</button></a>
+    <hr>
     <a href="/snap-stream/settings"><button>Settings</button></a>
+    <hr>
     <a href="/auth/logout"><button>Logout</button></a>
 </div>

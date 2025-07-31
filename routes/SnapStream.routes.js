@@ -242,13 +242,16 @@ router.get("/:id/home", isSignedIn, async (req, res) =>
 
         currentUser.following.forEach((u) => 
         {
-            console.log(u._id);
             allPosts.forEach((post) => 
             {
                 
-                if(u._id == post.user._id)
+                console.log("post: " + u._id);
+                console.log("post: " + post.user._id);
+                
+                if(JSON.stringify(u._id) === JSON.stringify(post.user._id))
                 {
-                    posts.push(post.user._id);
+                    posts.push(post);
+                    console.log("in if");
                 }
             });
         })

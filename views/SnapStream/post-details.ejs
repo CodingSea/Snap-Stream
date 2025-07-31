@@ -13,7 +13,9 @@
     <a href="/snap-stream/profile/<%= foundPost.user._id %>"><h1><%= foundPost.user.username %></h1></a>
     <img src="<%= foundPost.image %>">
 
-    <% if(isUserPost) { %>
+    <% if(isUser) { %>
+
+        <% if(isUserPost) { %>
         <form action="/snap-stream/<%= foundPost._id %>?/edit_method=PUT" method="post">
             <label for="content">Content: </label>
             <input type="text" name="content" value="<%= foundPost.content %>">
@@ -25,6 +27,7 @@
             <button type="submit">Delete Post</button>
         </form>
         <br>
+        <% } %>
 
         <form action="/snap-stream/<%= foundPost._id %>/like" method="post">
             <% if(isLiked) { %>
@@ -52,8 +55,14 @@
     <% } else { %>
         <p>Content: <%= foundPost.content %></p>
         <button type="submit" style="background: none; border: none; color: black; font-size: 2em;" disabled>♡ <%= foundPost.likes.length %></button>
+        <br>
 
+        <h3>Tags</h3>
+        <% foundPost.tags.forEach((tag) => { %>
+            <p><%= tag %></p>
+        <% }); %>
     <% } %>
+    
 
     
 

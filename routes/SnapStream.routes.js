@@ -59,7 +59,7 @@ router.get("/profile/:id", isSignedIn, async (req, res) =>
     }
 });
 
-router.get("/profile", (req, res) =>
+router.get("/profile", isSignedIn, (req, res) =>
 {
     res.redirect("/snap-stream/profile/" + req.session.user._id);
 });
@@ -113,13 +113,18 @@ router.get("/search", async (req, res) =>
     try
     {
         const allPosts = await Post.find();
-        const currentUser = await User.findById(req.session.user._id);
-        const userInfo = 
+        let currentUser;
+        let userInfo;
+        if(req.session.user)
         {
-            posts: allPosts.filter(x => x.user == req.session.user._id).length,
-            following: currentUser.following.length,
-            followers: currentUser.followers.length
+            currentUser = await User.findById(req.session.user._id);
+            userInfo = 
+            {
+                posts: allPosts.filter(x => x.user == req.session.user._id).length,
+                following: currentUser.following.length,
+                followers: currentUser.followers.length
 
+            }
         }
         lastPage = "/snap-stream/search";
         res.render("SnapStream/search.ejs", { foundUser: req.session.user, allPosts, currentUser, userInfo });
@@ -153,8 +158,13 @@ router.get("/:id", async (req, res) =>
         {
             isUserPost = foundPost.user._id == req.session.user._id;
         }
+        let isUser = false;
+        if(req.session.user)
+        {
+            isUser = true;
+        }
         const isLiked = foundPost.likes.includes(req.session.userId);
-        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isLiked });
+        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked });
     }
     catch (error)
     {

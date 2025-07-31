@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema
         following: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
         followers: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
         profileImage: String,
+        profileImageId: String,
         role: {type:String, enum: ["user", "admin"], default: "user"}
     }
 );

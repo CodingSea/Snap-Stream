@@ -2,7 +2,7 @@
     <% if(currentUser){ %>
         <h1><%= currentUser.username %></h1>
 
-        <% if(currentUser.image) { %>
+        <% if(currentUser.profileImage) { %>
             <img src="<%= currentUser.profileImage %>" width="200px" height="200px" alt="post-image">
         <% } else { %>
             <img src="/images/person.png" width="200px" height="200px" alt="post-image">

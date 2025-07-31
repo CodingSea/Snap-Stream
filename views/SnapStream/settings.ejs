@@ -4,18 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settinsg</title>
+    <link rel="stylesheet" href="/settings.css">
 </head>
 <body>
     <h1>Settings</h1>
-    <% if(foundUser.image) {%>
-        <img src="<%= foundUser.image %>">
+    <% if(foundUser.profileImage) {%>
+        <img src="<%= foundUser.profileImage %>">
     <% } else { %>
         <img src="/images/person.png">
     <% } %>
     
-    <form action="/snap-stream/settings/profile-image" method="post">
+    <form action="/snap-stream/<%= foundUser._id %>/settings/profile-image" method="post" enctype="multipart/form-data">
         <label for="profileImage">Profile Image: </label>
         <input name="profileImage" type="file">
+
+        <button type="submit">Update Profile Image</button>
     </form>
 
 </body>

@@ -89,6 +89,7 @@ router.post("/new", upload.single("image"), async (req, res) =>
         const post =
         {
             image: cldRes.secure_url,
+            imageId: cldRes.public_id,
             content: req.body.content,
             comments: [],
             user: req.session.user._id,
@@ -137,15 +138,49 @@ router.get("/search", async (req, res) =>
     }
 });
 
+router.get("/settings", isSignedIn, async (req, res) => 
+{
+    res.redirect("/snap-stream/" + req.session.user._id + "/settings")
+});
 
-
-router.get("/settings", async (req, res) => 
+router.get("/:id/settings", isSignedIn, async (req, res) => 
 {
     try
     {
-        console.log('session',req.session.user)
-        const foundUser = await User.findById(req.session.user._id);
+        const foundUser = await User.findById(req.params.id);
+
         res.render("SnapStream/settings.ejs", { foundUser });
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
+router.post("/:id/settings/profile-image", upload.single("profileImage"), async (req, res) => 
+{
+    try
+    {
+        const foundUser = await User.findById(req.params.id);
+
+        if(foundUser.profileImage)
+        {
+            cloudinary.uploader.destroy(foundUser.profileImageId, function(error, result)
+            {
+                console.log(result, error);
+            });
+        }
+
+        // taken from the internet
+        const b64 = Buffer.from(req.file.buffer).toString("base64");
+        let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataURI);
+
+        foundUser.profileImage = cldRes.secure_url;
+        foundUser.profileImageId = cldRes.public_id;
+        foundUser.save();
+
+        res.redirect("/snap-stream/settings");
     }
     catch(error)
     {
@@ -157,7 +192,9 @@ router.delete("/:id", async (req, res) =>
 {
     try
     {
-        await Post.findByIdAndDelete(req.params.id);
+        const foundPost = await Post.findById(req.params.id);
+        cloudinary.uploader.destroy(foundPost.imageId);
+        await Post.deleteOne(foundPost._id);
         res.redirect("/snap-stream/profile/" + req.session.user._id);
     }
     catch (error)

@@ -13,6 +13,7 @@ const postSchema = new mongoose.Schema
 (
     {
         image: {type: String, required: true},
+        imageId: String,
         content: String,
         comments: [commentSchema],
         user: {type: mongoose.Schema.Types.ObjectId, ref: "User"},

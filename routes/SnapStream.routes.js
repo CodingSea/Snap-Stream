@@ -219,6 +219,60 @@ router.post("/:id/settings/profile-image", upload.single("profileImage"), async 
     }
 });
 
+router.get("/home", isSignedIn, (req, res) => 
+{
+    res.redirect("/snap-stream/" + req.session.user._id + "/home")
+});
+
+router.get("/:id/home", isSignedIn, async (req, res) => 
+{
+    try
+    {
+        const allPosts = await Post.find().populate("user");
+        const currentUser = await User.findById(req.session.user._id).populate("following");
+        
+        const userInfo = 
+        {
+            posts: allPosts.filter(x => x.user._id == req.params.id).length,
+            following: currentUser.following.length,
+            followers: currentUser.followers.length
+        }
+
+        let posts = [];
+
+        currentUser.following.forEach((u) => 
+        {
+            console.log(u._id);
+            allPosts.forEach((post) => 
+            {
+                
+                if(u._id == post.user._id)
+                {
+                    posts.push(post.user._id);
+                }
+            });
+        })
+
+        res.render("SnapStream/homepage.ejs", { posts, allPosts, currentUser, userInfo });
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
+router.post("/back", (req, res) =>
+{
+    if(lastPage == undefined)
+    {
+        res.redirect("/");
+    }
+    else
+    { 
+        res.redirect(lastPage);
+    }
+});
+
 router.delete("/:id", async (req, res) => 
 {
     try
@@ -313,18 +367,6 @@ router.post("/:id/like", async (req, res) =>
     catch (error)
     {
         console.log(error);
-    }
-});
-
-router.post("/back", (req, res) =>
-{
-    if(lastPage == undefined)
-    {
-        res.redirect("/");
-    }
-    else
-    { 
-        res.redirect(lastPage);
     }
 });
 

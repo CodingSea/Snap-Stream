@@ -97,9 +97,27 @@ router.post("/profile/:id/followBtn", async (req, res) =>
     }
 });
 
-router.get("/new", isSignedIn, (req, res) =>
+router.get("/new", isSignedIn, async (req, res) =>
 {
-    res.render("SnapStream/new.ejs");
+    try
+    {
+        const currentUser = await User.findById(req.session.user._id);;
+        let allPosts = await Post.find();
+
+        const userInfo = 
+        {
+            posts: allPosts.filter(x => x.user == req.session.user._id).length,
+            following: currentUser.following.length,
+            followers: currentUser.followers.length
+
+        }
+
+        res.render("SnapStream/new.ejs", {currentUser, userInfo});
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
 });
 
 router.post("/new", upload.single("image"), async (req, res) =>
@@ -179,8 +197,18 @@ router.get("/:id/settings", isSignedIn, async (req, res) =>
     try
     {
         const foundUser = await User.findById(req.params.id);
+        const currentUser = foundUser;
+        let allPosts = await Post.find();
 
-        res.render("SnapStream/settings.ejs", { foundUser });
+        const userInfo = 
+        {
+            posts: allPosts.filter(x => x.user == req.session.user._id).length,
+            following: currentUser.following.length,
+            followers: currentUser.followers.length
+
+        }
+
+        res.render("SnapStream/settings.ejs", { foundUser, currentUser, userInfo });
     }
     catch(error)
     {
@@ -296,18 +324,23 @@ router.get("/:id", async (req, res) =>
     try
     {
         const foundPost = await Post.findById(req.params.id).populate("user").populate("comments.user");
+        const allPosts = await Post.find();
         let isUserPost = false;
+        let isUser = false;
         if (req.session.user)
         {
             isUserPost = foundPost.user._id == req.session.user._id;
-        }
-        let isUser = false;
-        if(req.session.user)
-        {
             isUser = true;
         }
+        const currentUser = await User.findById(req.session.user._id);
+        const userInfo = 
+        {
+            posts: allPosts.filter(x => x.user._id == req.params.id).length,
+            following: currentUser.following.length,
+            followers: currentUser.followers.length
+        }
         const isLiked = foundPost.likes.includes(req.session.userId);
-        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked });
+        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked, currentUser, userInfo });
     }
     catch (error)
     {

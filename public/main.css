@@ -2,7 +2,7 @@ body
 {
     padding: 0;
     margin: 0;
-    display: inline;
+    display: flex;
 }
 
 .tabsContainer
@@ -11,24 +11,13 @@ body
     width: 20%;
     height: 100vh;
     margin: -1px;
-    float: left;
+    justify-content: flex-start;
+    align-self: stretch;
 }
 
 .tabsContainer li
 {
     text-decoration: none;
-}
-
-header
-{
-    border: 1px solid black;
-    width: 80%;
-    float: right;
-    right: 0%;
-    text-align: center;
-    margin: -1px;
-    top: 0;
-    z-index: 1;
 }
 
 .addPost
@@ -41,20 +30,58 @@ header
 .container
 {
     border: 1px solid black;
-    width: 75%;
-    right: 0%;
     text-align: center;
-    margin: -1%;
     top: 0;
     z-index: 0;
     margin-top: 1em;
-    margin: auto;
+    margin: 0 3em;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    align-content: flex-start;
+}
+
+.page
+{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;    
+    justify-content: space-between;
+    margin: 0 3em;
 }
 
 .post
+{
+    border: 1px solid black;
+    width: 50%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: first baseline;
+    flex-direction: column;
+}
+
+.post img
+{
+    width: 100%;
+    max-height: 50%;
+}
+
+header
+{
+    border: 1px solid black;
+    width: 100%;
+    float: right;
+    right: 0hv;
+    text-align: center;
+    margin-bottom: 1em;
+    top: 0;
+    z-index: 1;
+    height: 3em;
+}
+
+.post-card
 {
     background-color: rgb(54, 54, 54);
     width: 200px;
@@ -62,7 +89,7 @@ header
     
 }
 
-.post img
+.post-card img
 {
     width: 100%;
     height: 200px;
@@ -103,6 +130,7 @@ header
 .post-details img
 {
     width: 100%;
+    max-height: 100%;
 }
 
 .post-details a

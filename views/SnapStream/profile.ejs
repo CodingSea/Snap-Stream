@@ -8,42 +8,43 @@
 </head>
 <body>
     <%- include("../partials/tabs") %>
-    <%- include("../partials/post")  %>
 
-    <header>
-        <a href="/snap-stream/new" class="addPost"><button>Add Post</button></a>
-    </header>
+    <div class="page">
+        <header>
+            <a href="/snap-stream/new" class="addPost"><button>Add Post</button></a>
+        </header>
 
-    <% if(foundUser.email != currentUser.email) { %>
-        <div class="other-profile">
-            <% if(foundUser.profileImage) {%>
-                <img src="<%= foundUser.profileImage %>">
-            <% } else { %>
-                <img src="/images/person.png">
-            <% } %>
+        <% if(foundUser.email != currentUser.email) { %>
+            <div class="other-profile">
+                <% if(foundUser.profileImage) {%>
+                    <img src="<%= foundUser.profileImage %>">
+                <% } else { %>
+                    <img src="/images/person.png">
+                <% } %>
 
-            <h1><%= foundUser.username %></h1>
-            <ul>
-                <li>Posts: <%= allPosts.length %></li>
-                <li>Following: <%= foundUser.following.length %></li>
-                <li>Followers: <%= foundUser.followers.length %></li>
-            </ul>
+                <h1><%= foundUser.username %></h1>
+                <ul>
+                    <li>Posts: <%= allPosts.length %></li>
+                    <li>Following: <%= foundUser.following.length %></li>
+                    <li>Followers: <%= foundUser.followers.length %></li>
+                </ul>
 
-            <br>
-            <form action="/snap-stream/profile/<%= foundUser._id %>/followBtn" method="post">
-                <button type="submit">Follow</button>
-            </form>
-        </div>
-    <% } %>
-
-    <div class="container">
-        <% allPosts.forEach((post) => { %>
-            <div class="post">
-                <a href="/snap-stream/<%= post._id %>">
-                    <img src="<%= post.image %>" alt="post-image">
-                </a>
+                <br>
+                <form action="/snap-stream/profile/<%= foundUser._id %>/followBtn" method="post">
+                    <button type="submit">Follow</button>
+                </form>
             </div>
-        <% }); %>
+        <% } %>
+
+        <div class="container">
+            <% allPosts.forEach((post) => { %>
+                <div class="post-card">
+                    <a href="/snap-stream/<%= post._id %>">
+                        <img src="<%= post.image %>" alt="post-image">
+                    </a>
+                </div>
+            <% }); %>
+        </div>
     </div>
     
 </body>

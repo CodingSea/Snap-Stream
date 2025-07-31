@@ -7,26 +7,30 @@
     <link rel="stylesheet" href="/main.css">
 </head>
 <body>
-    <h1>Create a Post</h1>
+    <%- include("../partials/tabs") %>
+
+    <div class="page">
+        <h1>Create a Post</h1>
     
-    <form action="/snap-stream/new" method="post" enctype="multipart/form-data">
-        <label for="image">Image: </label>
-        <input name="image" type="file">
+        <form action="/snap-stream/new" method="post" enctype="multipart/form-data">
+            <label for="image">Image: </label>
+            <input name="image" type="file">
 
-        <label for="content">Content: </label>
-        <input name="content" type="texts">
+            <label for="content">Content: </label>
+            <input name="content" type="texts">
 
-        <% let tags = []; %>
-        <label for="tag">Tags: </label>
-        <input name="tag" type="texts" id="tagInput">
-        <div id="tagList">
-            
-        </div>
-        <button type="button" id="tagBtn" onclick="addTag()">Add Tag</button>
-
-        <button>Upload Post</button>
-    </form>
-
+            <button>Upload Post</button>
+            <br>
+            <br>
+            <label for="tag">Tags: </label>
+            <input name="tag" type="texts" id="tagInput">
+            <div id="tagList">
+                
+            </div>
+            <br>
+            <button type="button" id="tagBtn" onclick="addTag()">Add Tag</button>
+        </form>
+    </div>
 
     <script>
         let i = 0;
@@ -35,7 +39,7 @@
             const tagInputEl = document.querySelector("#tagInput");
             const tagListEl = document.querySelector("#tagList");
             
-            tagListEl.innerHTML += `<label for="tag_${i}">Tag: </label>
+            tagListEl.innerHTML += `<label for="tag_${i}"></label>
             <input name="tag_${i}" value="${tagInputEl.value}">`;
             i++;
             tagInputEl.value = "";

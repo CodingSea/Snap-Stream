@@ -7,18 +7,20 @@
     <link rel="stylesheet" href="/main.css">
 </head>
 <body>
-    <%- include("../partials/header") %>
     <%- include("../partials/tabs") %>
+
+    <div class="page">
+    <%- include("../partials/header") %>
     
     <div class="container">
         <% allPosts.forEach((post) => { %>
             <a href="/snap-stream/<%= post._id %>">
-            <div class="post">
+            <div class="post-card">
                 <img src="<%= post.image %>" alt="post-image">
             </div>
             </a>
         <% }); %>
     </div>
-    
+    </div>
 </body>
 </html>

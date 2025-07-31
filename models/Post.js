@@ -16,8 +16,10 @@ const postSchema = new mongoose.Schema
         content: String,
         comments: [commentSchema],
         user: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
-        likes: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}]
+        likes: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
+        tags: [String]
     }
+    , {timestamps: true}
 );
 
 const Post = mongoose.model("Post", postSchema);

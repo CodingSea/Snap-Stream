@@ -50,6 +50,11 @@ router.get("/profile/:id", isSignedIn, async (req, res) =>
     }
 });
 
+router.get("/profile", (req, res) =>
+{
+    res.redirect("/snap-stream/profile/" + req.session.user._id);
+});
+
 router.get("/new", isSignedIn, (req, res) =>
 {
     res.render("SnapStream/new.ejs");
@@ -59,26 +64,33 @@ router.post("/new", upload.single("image"), async (req, res) =>
 {
     try
     {
-        console.log(req.file);
-
-        // 
+        // taken from the internet
         const b64 = Buffer.from(req.file.buffer).toString("base64");
         let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
         const cldRes = await handleUpload(dataURI);
+
+        const tagsEntries = Object.entries(req.body).filter(([key, value]) =>
+            key.includes("tag_")
+        );
+
+        const tags = tagsEntries.map(([, value]) => value);
         
         const post =
         {
             image: cldRes.secure_url,
             content: req.body.content,
             comments: [],
-            user: req.session.user._id
+            user: req.session.user._id,
+            tags: tags
         }
+
+        
+
         await Post.create(post),
         // the go to last page is taken from the internet
         req.session.history.pop();
         const previousPage = req.session.history[req.session.history.length - 1];
-        lastPage = "/snap-stream/new";
-        res.redirect(previousPage);
+        res.redirect("/snap-stream/profile/" + req.session.user._id);
 
     }
     catch (error)

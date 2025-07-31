@@ -10,7 +10,7 @@
         <button type="submit">Back</button>
     </form>
 
-    <h1><%= foundPost.user.username %></h1>
+    <a href="/snap-stream/profile/<%= foundPost.user._id %>"><h1><%= foundPost.user.username %></h1></a>
     <img src="<%= foundPost.image %>">
 
     <% if(isUserPost) { %>
@@ -33,6 +33,13 @@
                 <button type="submit" style="background: none; border: none; font-size: 2em;">♡ <%= foundPost.likes.length %></button>
             <% } %>
         </form>
+
+        <br>
+
+        <h3>Tags</h3>
+        <% foundPost.tags.forEach((tag) => { %>
+            <p><%= tag %></p>
+        <% }); %>
 
         <br>
 

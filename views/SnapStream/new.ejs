@@ -16,7 +16,31 @@
         <label for="content">Content: </label>
         <input name="content" type="texts">
 
+        <% let tags = []; %>
+        <label for="tag">Tags: </label>
+        <input name="tag" type="texts" id="tagInput">
+        <div id="tagList">
+            
+        </div>
+        <button type="button" id="tagBtn" onclick="addTag()">Add Tag</button>
+
         <button>Upload Post</button>
     </form>
+
+
+    <script>
+        let i = 0;
+        function addTag()
+        {
+            const tagInputEl = document.querySelector("#tagInput");
+            const tagListEl = document.querySelector("#tagList");
+            
+            tagListEl.innerHTML += `<label for="tag_${i}">Tag: </label>
+            <input name="tag_${i}" value="${tagInputEl.value}">`;
+            i++;
+            tagInputEl.value = "";
+            
+        }
+    </script>
 </body>
 </html>

@@ -137,6 +137,22 @@ router.get("/search", async (req, res) =>
     }
 });
 
+
+
+router.get("/settings", async (req, res) => 
+{
+    try
+    {
+        console.log('session',req.session.user)
+        const foundUser = await User.findById(req.session.user._id);
+        res.render("SnapStream/settings.ejs", { foundUser });
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
 router.delete("/:id", async (req, res) => 
 {
     try
@@ -241,18 +257,6 @@ router.post("/back", (req, res) =>
     else
     { 
         res.redirect(lastPage);
-    }
-});
-
-router.get("/settings", async (req, res) => 
-{
-    try
-    {
-        
-    }
-    catch(error)
-    {
-        console.log(error);
     }
 });
 

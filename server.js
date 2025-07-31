@@ -58,13 +58,14 @@ app.get("/", (req, res) =>
 {
     res.render("home.ejs");
 });
-app.use("/snap-stream", snapRoutes);
 
 app.use(passUserToView);
 
+app.use("/snap-stream", snapRoutes);
+
 app.use("/auth", authRoutes);
 
-app.use(isSignedIn);
+//app.use(isSignedIn);
 app.use("/snap-stream", snapRoutes);
 
 

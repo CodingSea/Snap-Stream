@@ -12,7 +12,11 @@
     <% } else { %>
         <img src="/images/person.png">
     <% } %>
-
     
+    <form action="/snap-stream/settings/profile-image" method="post">
+        <label for="profileImage">Profile Image: </label>
+        <input name="profileImage" type="file">
+    </form>
+
 </body>
 </html>

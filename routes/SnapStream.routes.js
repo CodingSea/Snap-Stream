@@ -40,7 +40,7 @@ router.get("/profile/:id", isSignedIn, async (req, res) =>
 
         const currentUser = await User.findById(req.session.user._id);
         const foundUser = await User.findById(req.params.id);
-        const allPosts = await Post.find({ user: req.params.id });
+        let allPosts = await Post.find();
 
         const userInfo = 
         {
@@ -49,6 +49,8 @@ router.get("/profile/:id", isSignedIn, async (req, res) =>
             followers: currentUser.followers.length
 
         }
+        
+        allPosts = allPosts.filter(x => x.user == req.params.id);
 
         lastPage = "/snap-stream/profile/" + req.params.id;
         res.render("SnapStream/profile.ejs", { foundUser, allPosts, currentUser, userInfo });
@@ -239,6 +241,18 @@ router.post("/back", (req, res) =>
     else
     { 
         res.redirect(lastPage);
+    }
+});
+
+router.get("/settings", async (req, res) => 
+{
+    try
+    {
+        
+    }
+    catch(error)
+    {
+        console.log(error);
     }
 });
 

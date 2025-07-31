@@ -28,6 +28,10 @@
                 <li>Following: <%= foundUser.following.length %></li>
                 <li>Followers: <%= foundUser.followers.length %></li>
             </ul>
+
+            <form action="/snap-stream/profile/<%= foundUser._id %>/followBtn" method="post">
+                <input type="button" name="followBtn" id="followBtn" value="Follow">
+            </form>
         </div>
     <% } %>
 

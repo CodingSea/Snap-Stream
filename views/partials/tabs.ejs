@@ -1,8 +1,21 @@
 <div class="tabsContainer">
-    <% if(foundUser){ %>
+    <% if(currentUser){ %>
         <h1><%= currentUser.username %></h1>
+
+        <% if(currentUser.image) { %>
+            <img src="<%= currentUser.profileImage %>" width="200px" height="200px" alt="post-image">
+        <% } else { %>
+            <img src="/images/person.png" width="200px" height="200px" alt="post-image">
+        <% } %>
+    <% }%>
+    
+    <% if(userInfo) { %>
+        <ul>
+            <li>Posts: <%= userInfo.posts %></li>
+            <li>Following: <%= userInfo.following %></li>
+            <li>Followers: <%= userInfo.followers %></li>
+        </ul>
     <% } %>
-    <img src="/images/person.png" width="200px" height="200px" alt="post-image">
     <br>
     <a href="/snap-stream/profile"><button>Profile</button></a>
     <a href="/snap-stream/search"><button>Search</button></a>

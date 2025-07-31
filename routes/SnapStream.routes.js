@@ -42,8 +42,16 @@ router.get("/profile/:id", isSignedIn, async (req, res) =>
         const foundUser = await User.findById(req.params.id);
         const allPosts = await Post.find({ user: req.params.id });
 
+        const userInfo = 
+        {
+            posts: allPosts.filter(x => x.user == req.session.user._id).length,
+            following: currentUser.following.length,
+            followers: currentUser.followers.length
+
+        }
+
         lastPage = "/snap-stream/profile/" + req.params.id;
-        res.render("SnapStream/profile.ejs", { foundUser, allPosts, currentUser });
+        res.render("SnapStream/profile.ejs", { foundUser, allPosts, currentUser, userInfo });
     }
     catch (error)
     {
@@ -106,8 +114,15 @@ router.get("/search", async (req, res) =>
     {
         const allPosts = await Post.find();
         const currentUser = await User.findById(req.session.user._id);
+        const userInfo = 
+        {
+            posts: allPosts.filter(x => x.user == req.session.user._id).length,
+            following: currentUser.following.length,
+            followers: currentUser.followers.length
+
+        }
         lastPage = "/snap-stream/search";
-        res.render("SnapStream/search.ejs", { foundUser: req.session.user, allPosts, currentUser });
+        res.render("SnapStream/search.ejs", { foundUser: req.session.user, allPosts, currentUser, userInfo });
     }
     catch (error)
     {

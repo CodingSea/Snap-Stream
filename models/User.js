@@ -1,5 +1,12 @@
 const mongoose = require("mongoose");
 
+const settingSchema = new mongoose.Schema(
+    {
+        user: { type: mongoose.Types.ObjectId, ref: "User" },
+        theme: ["Light", "Dark"],
+    }
+);
+
 const userSchema = new mongoose.Schema
 (
     {
@@ -10,7 +17,8 @@ const userSchema = new mongoose.Schema
         followers: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
         profileImage: String,
         profileImageId: String,
-        role: {type:String, enum: ["user", "admin"], default: "user"}
+        role: {type:String, enum: ["user", "admin"], default: "user"},
+        setting: settingSchema
     }
 );
 

@@ -66,6 +66,37 @@ router.get("/profile", isSignedIn, (req, res) =>
     res.redirect("/snap-stream/profile/" + req.session.user._id);
 });
 
+router.post("/profile/:id/followBtn", async (req, res) =>
+{
+    try
+    {
+        const foundUser = await User.findById(req.params.id);
+        const currentUser = await User.findById(req.session.user._id);
+        if(currentUser.following.includes(foundUser._id))
+        {
+            currentUser.following.pop(foundUser._id);
+            currentUser.save();
+            foundUser.followers.pop(currentUser._id);
+            foundUser.save();
+        }
+        else
+        {
+            currentUser.following.push(foundUser._id);
+            currentUser.save();
+            foundUser.followers.push(currentUser._id);
+            foundUser.save();
+        }
+
+        console.log("called");
+
+        res.redirect("/snap-stream/profile/" + req.params.id)
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
 router.get("/new", isSignedIn, (req, res) =>
 {
     res.render("SnapStream/new.ejs");

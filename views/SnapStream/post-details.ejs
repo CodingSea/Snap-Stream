@@ -28,8 +28,6 @@
 
         <% if(isUser) { %>
 
-            <% if(isUserPost) { %>
-
             <form action="/snap-stream/<%= foundPost._id %>/like" method="post">
                 <% if(isLiked) { %>
                     <button type="submit" style="background: none; border: none; color: red; font-size: 2em;">♥ <%= foundPost.likes.length %></button>
@@ -37,6 +35,9 @@
                     <button type="submit" style="background: none; border: none; font-size: 2em;">♡ <%= foundPost.likes.length %></button>
                 <% } %>
             </form>
+
+            <% if(isUserPost) { %>
+
             
             <form action="/snap-stream/<%= foundPost._id %>?/edit_method=PUT" method="post">
                 <label for="content">Content: </label>

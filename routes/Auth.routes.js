@@ -39,9 +39,6 @@ router.post("/sign-up", async (req, res) =>
     
         const createdUser = await User.create(req.body);
 
-        req.session.userId = createdUser._id;
-        req.session.isLoggedIn = true;
-
         req.session.user =
         {
             email: createdUser.email,

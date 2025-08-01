@@ -29,14 +29,15 @@ async function handleUpload(file)
 
 let lastPage;
 
-router.get("/profile/:id", isSignedIn, async (req, res) =>
+router.get("/profile/:id", async (req, res) =>
 {
     try
     {
-        if (!req.session.isLoggedIn)
+        if (!req.session.user)
         {
             return res.redirect("/");
         }
+        
 
         const currentUser = await User.findById(req.session.user._id);
         const foundUser = await User.findById(req.params.id);
@@ -338,12 +339,14 @@ router.get("/:id", async (req, res) =>
             currentUser = await User.findById(req.session.user._id);
             userInfo = 
             {
-                posts: allPosts.filter(x => x.user._id == req.params.id).length,
+                posts: allPosts.filter(x => x.user._id == req.session.user._id).length,
                 following: currentUser.following.length,
                 followers: currentUser.followers.length
             }
 
-            isLiked = foundPost.likes.includes(req.session.userId);
+
+
+            isLiked = foundPost.likes.includes(req.session.user._id);
         }
         res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked, currentUser, userInfo });
     }
@@ -373,7 +376,7 @@ router.post("/:id/comment", async (req, res) =>
         const foundPost = await Post.findById(req.params.id);
         const comment =
         {
-            user: req.session.userId,
+            user: req.session.user._id,
             content: req.body.content
         }
         foundPost.comments.push(comment);
@@ -392,14 +395,14 @@ router.post("/:id/like", async (req, res) =>
     {
         const foundPost = await Post.findById(req.params.id);
 
-        if (foundPost.likes.includes(req.session.userId))
+        if (foundPost.likes.includes(req.session.user._id))
         {
-            foundPost.likes.pop(req.session.userId);
+            foundPost.likes.pop(req.session.user._id);
             foundPost.save();
         }
         else
         {
-            foundPost.likes.push(req.session.userId);
+            foundPost.likes.push(req.session.user._id);
             foundPost.save();
         }
 

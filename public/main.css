@@ -82,6 +82,7 @@ header
     top: 0;
     z-index: 1;
     height: 3em;
+    float: left;
 }
 
 .post-card

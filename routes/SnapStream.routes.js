@@ -327,19 +327,24 @@ router.get("/:id", async (req, res) =>
         const allPosts = await Post.find();
         let isUserPost = false;
         let isUser = false;
+        let currentUser;
+        let userInfo;
+        let isLiked;
         if (req.session.user)
         {
             isUserPost = foundPost.user._id == req.session.user._id;
             isUser = true;
+
+            currentUser = await User.findById(req.session.user._id);
+            userInfo = 
+            {
+                posts: allPosts.filter(x => x.user._id == req.params.id).length,
+                following: currentUser.following.length,
+                followers: currentUser.followers.length
+            }
+
+            isLiked = foundPost.likes.includes(req.session.userId);
         }
-        const currentUser = await User.findById(req.session.user._id);
-        const userInfo = 
-        {
-            posts: allPosts.filter(x => x.user._id == req.params.id).length,
-            following: currentUser.following.length,
-            followers: currentUser.followers.length
-        }
-        const isLiked = foundPost.likes.includes(req.session.userId);
         res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked, currentUser, userInfo });
     }
     catch (error)

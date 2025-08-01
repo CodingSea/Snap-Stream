@@ -10,11 +10,15 @@
     <% }%>
     
     <% if(userInfo) { %>
-        <ul>
-            <li>Posts: <%= userInfo.posts %></li>
-            <li>Following: <%= userInfo.following %></li>
-            <li>Followers: <%= userInfo.followers %></li>
-        </ul>
+        <br>
+
+        <div class="userInfo">
+            <label>Posts: <%= userInfo.posts %></label> |
+            <label>Following: <%= userInfo.following %></label> |
+            <label>Followers: <%= userInfo.followers %></label>
+        </div>
+
+        <br>
     <% } %>
     <br>
     <a href="/snap-stream/profile"><button>Profile</button></a>

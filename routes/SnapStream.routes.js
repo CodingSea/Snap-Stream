@@ -42,6 +42,7 @@ router.get("/profile/:id", async (req, res) =>
         const currentUser = await User.findById(req.session.user._id);
         const foundUser = await User.findById(req.params.id);
         let allPosts = await Post.find();
+        let isFollowed = false;
 
         const userInfo = 
         {
@@ -50,11 +51,16 @@ router.get("/profile/:id", async (req, res) =>
             followers: currentUser.followers.length
 
         }
+
+        if(currentUser.following.includes(foundUser._id))
+        {
+            isFollowed = true;
+        }
         
         allPosts = allPosts.filter(x => x.user == req.params.id);
 
         lastPage = "/snap-stream/profile/" + req.params.id;
-        res.render("SnapStream/profile.ejs", { foundUser, allPosts, currentUser, userInfo });
+        res.render("SnapStream/profile.ejs", { foundUser, allPosts, currentUser, userInfo, isFollowed });
     }
     catch (error)
     {
@@ -76,19 +82,17 @@ router.post("/profile/:id/followBtn", async (req, res) =>
         if(currentUser.following.includes(foundUser._id))
         {
             currentUser.following.pop(foundUser._id);
-            currentUser.save();
+            await currentUser.save();
             foundUser.followers.pop(currentUser._id);
-            foundUser.save();
+            await foundUser.save();
         }
         else
         {
             currentUser.following.push(foundUser._id);
-            currentUser.save();
+            await currentUser.save();
             foundUser.followers.push(currentUser._id);
-            foundUser.save();
+            await foundUser.save();
         }
-
-        console.log("called");
 
         res.redirect("/snap-stream/profile/" + req.params.id)
     }
@@ -397,13 +401,13 @@ router.post("/:id/like", async (req, res) =>
 
         if (foundPost.likes.includes(req.session.user._id))
         {
-            foundPost.likes.pop(req.session.user._id);
-            foundPost.save();
+            foundPost.likes.splice(foundPost.likes.indexOf(req.session.user._id), 1);
+            await foundPost.save();
         }
         else
         {
             foundPost.likes.push(req.session.user._id);
-            foundPost.save();
+            await foundPost.save();
         }
 
         res.redirect("/snap-stream/" + req.params.id);

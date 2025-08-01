@@ -31,7 +31,12 @@
 
                 <br>
                 <form action="/snap-stream/profile/<%= foundUser._id %>/followBtn" method="post">
-                    <button type="submit">Follow</button>
+                    
+                    <% if(isFollowed) { %>
+                        <button type="submit">Unfollow</button>
+                    <% } else { %>
+                        <button type="submit">Follow</button>
+                    <% } %>
                 </form>
             </div>
         <% } %>

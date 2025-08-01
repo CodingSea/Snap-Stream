@@ -81,9 +81,9 @@ router.post("/profile/:id/followBtn", async (req, res) =>
         const currentUser = await User.findById(req.session.user._id);
         if(currentUser.following.includes(foundUser._id))
         {
-            currentUser.following.pop(foundUser._id);
+            currentUser.following.splice(currentUser.following.indexOf(foundUser._id), 1);
             await currentUser.save();
-            foundUser.followers.pop(currentUser._id);
+            foundUser.followers.splice(foundUser.followers.indexOf(currentUser._id), 1);
             await foundUser.save();
         }
         else

@@ -9,7 +9,7 @@
 <body>
     <%- include("../partials/tabs") %>
 
-    
+    <button class="postSwitchBtn" id="beforeBtn"><</button>
 
     <div class="post">
         <form action="/snap-stream/back" method="post">
@@ -94,5 +94,68 @@
 
     </div>
 
+    <button class="postSwitchBtn" id="afterBtn">></button>
+
+    <script>
+        const beforeBtnEl = document.querySelector("#beforeBtn");
+        const afterBtnEl = document.querySelector("#afterBtn");
+
+        // taken from the internet
+        function findInNestedArray(arr, targetValue) 
+        {
+            for (let i = 0; i < arr.length; i++) 
+            {
+                const currentItem = arr[i];
+
+                if (currentItem === targetValue) 
+                {
+                    return currentItem;
+                }
+
+                if (Array.isArray(currentItem)) 
+                {
+                    const foundInSubArray = findInNestedArray(currentItem, targetValue);
+                    if (foundInSubArray !== undefined) 
+                    {
+                        return foundInSubArray;
+                    }
+                }
+            }
+            return undefined;
+        }
+
+        function switchPost(i)
+        {
+            const allPostsArray = JSON.parse('<%- JSON.stringify(allPosts) %>');
+            const currentPostId = '<%= foundPost._id %>';
+            let nextPostIndex = -1;
+            for (let index = 0; index < allPostsArray.length; index++) 
+            {
+                const post = allPostsArray[index];
+
+                if (post._id === currentPostId) 
+                {
+                    nextPostIndex = index + i;
+                    break; 
+                }
+            }
+
+            if (nextPostIndex < allPostsArray.length && nextPostIndex >= 0) 
+            {
+                window.location.href = "/snap-stream/" + allPostsArray[nextPostIndex]._id;
+            } 
+        }
+
+        beforeBtnEl.addEventListener("click", () =>
+        {
+            switchPost(-1);
+        });
+
+        afterBtnEl.addEventListener("click", () =>
+        {
+            switchPost(1);
+        });
+
+    </script>
 </body>
 </html>

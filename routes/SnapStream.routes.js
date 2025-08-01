@@ -309,21 +309,6 @@ router.post("/back", (req, res) =>
     }
 });
 
-router.delete("/:id", async (req, res) => 
-{
-    try
-    {
-        const foundPost = await Post.findById(req.params.id);
-        cloudinary.uploader.destroy(foundPost.imageId);
-        await Post.deleteOne(foundPost._id);
-        res.redirect("/snap-stream/profile/" + req.session.user._id);
-    }
-    catch (error)
-    {
-        console.log(error);
-    }
-});
-
 router.get("/:id", async (req, res) =>
 {
     try
@@ -352,7 +337,23 @@ router.get("/:id", async (req, res) =>
 
             isLiked = foundPost.likes.includes(req.session.user._id);
         }
-        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked, currentUser, userInfo });
+        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked, currentUser, userInfo, allPosts });
+    }
+    catch (error)
+    {
+        console.log(error);
+    }
+});
+
+router.delete("/:id", async (req, res) => 
+{
+    try
+    {
+        const foundPost = await Post.findById(req.params.id).populate("user");
+        if(JSON.stringify(foundPost.user._id) != JSON.stringify(req.session.user._id)) { return res.redirect("/snap-stream/profile/" + req.session.user._id); }
+        cloudinary.uploader.destroy(foundPost.imageId);
+        await Post.deleteOne(foundPost._id);
+        res.redirect("/snap-stream/profile/" + req.session.user._id);
     }
     catch (error)
     {

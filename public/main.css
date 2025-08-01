@@ -141,3 +141,9 @@ header
 {
     margin-left: 0.5em;
 }
+
+.postSwitchBtn
+{
+    height: 3em;
+    margin: 35em auto;
+}

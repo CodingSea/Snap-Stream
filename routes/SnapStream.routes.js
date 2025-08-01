@@ -277,14 +277,9 @@ router.get("/:id/home", isSignedIn, async (req, res) =>
         {
             allPosts.forEach((post) => 
             {
-                
-                console.log("post: " + u._id);
-                console.log("post: " + post.user._id);
-                
                 if(JSON.stringify(u._id) === JSON.stringify(post.user._id))
                 {
                     posts.push(post);
-                    console.log("in if");
                 }
             });
         })

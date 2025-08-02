@@ -19,11 +19,20 @@
             <img src="/images/person.png">
         <% } %>
         
-        <form action="/snap-stream/<%= foundUser._id %>/settings/profile-image" method="post" enctype="multipart/form-data">
+        <form action="/snap-stream/<%= foundUser._id %>/settings/profile" method="post" enctype="multipart/form-data">
             <label for="profileImage">Profile Image: </label>
             <input name="profileImage" type="file">
 
-            <button type="submit">Update Profile Image</button>
+            <br>
+            <br>
+
+            <label for="username">Username: </label>
+            <input name="username" type="text" value="<%= foundUser.username %>">
+
+            <br>
+            <br>
+
+            <button type="submit">Update Profile</button>
         </form>
     </div>
 

@@ -223,7 +223,7 @@ router.get("/:id/settings", isSignedIn, async (req, res) =>
     }
 });
 
-router.post("/:id/settings/profile-image", upload.single("profileImage"), async (req, res) => 
+router.post("/:id/settings/profile", upload.single("profileImage"), async (req, res) => 
 {
     try
     {
@@ -235,15 +235,17 @@ router.post("/:id/settings/profile-image", upload.single("profileImage"), async 
             {
                 console.log(result, error);
             });
+
+            // taken from the internet
+            const b64 = Buffer.from(req.file.buffer).toString("base64");
+            let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+            const cldRes = await handleUpload(dataURI);
+
+            foundUser.profileImage = cldRes.secure_url;
+            foundUser.profileImageId = cldRes.public_id;
         }
-
-        // taken from the internet
-        const b64 = Buffer.from(req.file.buffer).toString("base64");
-        let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
-        const cldRes = await handleUpload(dataURI);
-
-        foundUser.profileImage = cldRes.secure_url;
-        foundUser.profileImageId = cldRes.public_id;
+        
+        foundUser.username = req.body.username;
         foundUser.save();
 
         res.redirect("/snap-stream/settings");

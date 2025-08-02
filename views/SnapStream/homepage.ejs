@@ -10,7 +10,10 @@
     <%- include("../partials/tabs") %>
     
     <div class="page">
-        <%- include("../partials/header") %>
+        <header>
+            <a href="/snap-stream/new" class="addPost"><button>Add Post</button></a>
+        </header>
+        
         <div class="container">
             <% posts.forEach((post) => { %>
                 <a href="/snap-stream/<%= post._id %>/home">

@@ -10,17 +10,60 @@
     <%- include("../partials/tabs") %>
 
     <div class="page">
-    <%- include("../partials/header") %>
-    
-    <div class="container">
-        <% allPosts.forEach((post) => { %>
+        <header>
+            <input type="text" placeholder="Search">
+
+            <select id="showType" onchange="handlsType(this)">
+                <option value="Posts">Posts</option>
+                <option value="Users">Users</option>
+            </select>
+
+            <a href="/snap-stream/new" class="addPost"><button>Add Post</button></a>
+        </header>
+        
+        <div class="container">
+            <% allPosts.forEach((post) => { %>
             <a href="/snap-stream/<%= post._id %>/search">
             <div class="post-card">
                 <img src="<%= post.image %>" alt="post-image">
             </div>
             </a>
-        <% }); %>
+            <% }); %>
+        </div>
     </div>
-    </div>
+
+    <script>
+        const showTypeEl = document.querySelector("#showType");
+        const containerEl = document.querySelector(".container");
+
+        let sp = '<%= showPosts %>'
+        function handlsType(selection)
+        {
+            if(showTypeEl.value == "Posts")
+            {
+                containerEl.innerHTML = `<% allPosts.forEach((post) => { %>
+                    <a href="/snap-stream/<%= post._id %>/search">
+                    <div class="post-card">
+                        <img src="<%= post.image %>" alt="post-image">
+                    </div>
+                    </a>
+                <% }); %>`;
+            }
+            else
+            {
+                containerEl.innerHTML = `<% allUsers.forEach((user) => { %>
+                    <a href="/snap-stream/profile/<%= user._id %>">
+                    <div class="user-card">
+                        <% if(user.profileImage) { %>
+                            <img src="<%= user.profileImage %>" alt="user-image">
+                        <% } else { %>
+                            <img src="/images/person.png" alt="user-image">
+                        <% } %>
+                    </div>
+                    </a>
+                <% }); %>`;
+            }
+        }
+    </script>
 </body>
 </html>

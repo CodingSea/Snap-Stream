@@ -18,6 +18,12 @@ body
     flex-shrink: 0;
 }
 
+.tabsContainer img
+{
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+}
+
 .tabsContainer li
 {
     text-decoration: none;
@@ -115,6 +121,8 @@ header
     width: 150px;
     padding: 1em;
     margin: 0 auto;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
 }
 
 .other-profile form
@@ -146,4 +154,13 @@ header
 {
     height: 3em;
     margin: 35em auto;
+}
+
+.user-card img
+{
+    width: 100%;
+    height: 200px;
+
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
 }

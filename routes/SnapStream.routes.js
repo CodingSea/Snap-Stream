@@ -170,8 +170,10 @@ router.get("/search", async (req, res) =>
     try
     {
         const allPosts = await Post.find();
+        const allUsers = await User.find();
         let currentUser;
         let userInfo;
+        let showPosts = true;
         if(req.session.user)
         {
             currentUser = await User.findById(req.session.user._id);
@@ -184,7 +186,7 @@ router.get("/search", async (req, res) =>
             }
         }
         lastPage = "/snap-stream/search";
-        res.render("SnapStream/search.ejs", { foundUser: req.session.user, allPosts, currentUser, userInfo });
+        res.render("SnapStream/search.ejs", { foundUser: req.session.user, allPosts, currentUser, userInfo, allUsers, showPosts });
     }
     catch (error)
     {

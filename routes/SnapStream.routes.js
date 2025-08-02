@@ -260,16 +260,21 @@ router.delete("/:id/settings/profile", async (req, res) =>
 {
     try
     {
-        const allPosts = await Post.find().populate("user").populate("comments.user");
-        allPosts.forEach((post) =>
+        //const allPosts = await Post.find().populate("user").populate("comments.user");
+        //const allUsers = await User.find();
+        const foundUser = await User.findById(req.session.user._id).populate("following").populate("followers");
+
+        foundUser.following.forEach( async (u) =>
         {
-            post.comments.forEach((comment) =>
-            {
-                if(JSON.stringify(comment.user._id) == JSON.stringify(req.session.user._id))
-                {
-                    post.comments.splice(post.comments.indexOf(comment._id), 1);
-                }
-            });
+            const fUser = await User.findById(u._id);
+            fUser.followers.splice(fUser.followers.indexOf(foundUser._id, 1));
+            fUser.save();
+        });
+        foundUser.followers.forEach( async (u) =>
+        {
+            const fUser = await User.findById(u._id);
+            fUser.following.splice(fUser.following.indexOf(foundUser._id, 1))
+            fUser.save();
         });
 
         const allUserPosts = await Post.find({user: req.session.user._id});

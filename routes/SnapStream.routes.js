@@ -4,6 +4,7 @@ const User = require("../models/User");
 const isSignedIn = require("../middleware/isSignedIn");
 const cloudinary = require('cloudinary').v2;
 const multer = require("multer");
+let pageType = "profile";
 
 const storage = multer.memoryStorage
     ({
@@ -260,8 +261,7 @@ router.delete("/:id/settings/profile", async (req, res) =>
 {
     try
     {
-        //const allPosts = await Post.find().populate("user").populate("comments.user");
-        //const allUsers = await User.find();
+        const allPosts = await Post.find().populate("user").populate("comments.user");
         const foundUser = await User.findById(req.session.user._id).populate("following").populate("followers");
 
         foundUser.following.forEach( async (u) =>
@@ -284,6 +284,15 @@ router.delete("/:id/settings/profile", async (req, res) =>
             cloudinary.uploader.destroy(foundPost.imageId);
         });
 
+        allPosts.forEach((post) =>
+        {
+            if(post.likes.includes(req.session.user._id))
+            {
+                post.likes.splice(post.likes.indexOf(req.session.user._id, 1));
+                post.save();
+            }
+        });
+        
         await Post.deleteMany({ user: req.session.user._id });
 
         await User.findByIdAndDelete(req.session.user._id);
@@ -361,7 +370,7 @@ router.get("/:id/profile", async (req, res) =>
         let currentUser;
         let userInfo;
         let isLiked;
-        const pageType = "profile";
+        pageType = "profile";
         if (req.session.user)
         {
             isUserPost = foundPost.user._id == req.session.user._id;
@@ -396,7 +405,7 @@ router.get("/:id/search", async (req, res) =>
         let currentUser;
         let userInfo;
         let isLiked;
-        const pageType = "search";
+        pageType = "search";
         if (req.session.user)
         {
             isUserPost = foundPost.user._id == req.session.user._id;
@@ -430,7 +439,7 @@ router.get("/:id/home", async (req, res) =>
         let currentUser;
         let userInfo;
         let isLiked;
-        const pageType = "home";
+        pageType = "home";
         if (req.session.user)
         {
             isUserPost = foundPost.user._id == req.session.user._id;
@@ -510,7 +519,7 @@ router.post("/:id/comment", async (req, res) =>
         }
         foundPost.comments.push(comment);
         await foundPost.save();
-        res.redirect("/snap-stream/" + req.params.id);
+        res.redirect("/snap-stream/" + req.params.id + "/" + pageType);
     }
     catch (error)
     {
@@ -535,7 +544,7 @@ router.post("/:id/like", async (req, res) =>
             await foundPost.save();
         }
 
-        res.redirect("/snap-stream/" + req.params.id);
+        res.redirect("/snap-stream/" + req.params.id + "/" + pageType);
     }
     catch (error)
     {

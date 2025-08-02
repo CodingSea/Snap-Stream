@@ -552,4 +552,52 @@ router.post("/:id/like", async (req, res) =>
     }
 });
 
+router.post("/search/posts", async (req, res) =>
+{
+    try
+    {
+        let allPosts = await Post.find();
+        let allUsers = await User.find();
+        let currentUser;
+        let userInfo;
+        let showPosts = true;
+        if(req.body.showType == "Posts")
+        {
+            showPosts = true;
+        }
+        else
+        {
+            showPosts = false;
+        }
+        
+        if(req.session.user)
+        {
+            currentUser = await User.findById(req.session.user._id);
+            userInfo = 
+            {
+                posts: allPosts.filter(x => x.user == req.session.user._id).length,
+                following: currentUser.following.length,
+                followers: currentUser.followers.length
+
+            }
+        }
+
+        const searchInput = req.body.search;
+
+        if(searchInput != "")
+        {
+            allPosts = allPosts.filter(x => x.tags.some(y => y.includes(searchInput)));
+            allUsers = allUsers.filter(x => x.username.includes(searchInput));
+        }
+
+
+        lastPage = "/snap-stream/search";
+        res.render("SnapStream/search.ejs", { foundUser: req.session.user, allPosts, currentUser, userInfo, allUsers, showPosts });
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
 module.exports = router;

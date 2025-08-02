@@ -85,6 +85,7 @@ header
     right: 0hv;
     text-align: center;
     margin-bottom: 1em;
+    padding-top: 1em;
     top: 0;
     z-index: 1;
     height: 3em;
@@ -163,4 +164,9 @@ header
 
     border-radius: 50%;
     aspect-ratio: 1 / 1;
+}
+
+header form
+{
+    display: inline;
 }

@@ -5,18 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
     <%- include("../partials/tabs") %>
 
     <div class="page">
         <header>
-            <input type="text" placeholder="Search">
+            
+            
+            <form action="/snap-stream/search/posts" method="post">
+                <select id="showType" name="showType" onchange="handlsType(this)" onclick="handlsType(this)">
+                    <option value="Posts">Posts</option>
+                    <option value="Users">Users</option>
+                </select>
 
-            <select id="showType" onchange="handlsType(this)">
-                <option value="Posts">Posts</option>
-                <option value="Users">Users</option>
-            </select>
+                <input name="search" type="text" placeholder="Search...">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
 
             <a href="/snap-stream/new" class="addPost"><button>Add Post</button></a>
         </header>
@@ -36,7 +42,6 @@
         const showTypeEl = document.querySelector("#showType");
         const containerEl = document.querySelector(".container");
 
-        let sp = '<%= showPosts %>'
         function handlsType(selection)
         {
             if(showTypeEl.value == "Posts")
@@ -64,6 +69,23 @@
                 <% }); %>`;
             }
         }
+
+        function init()
+        {
+            let sp = '<%= showPosts %>'
+            if(sp)
+            {
+                showTypeEl.value = 'Posts';
+            }
+            else
+            {
+                showTypeEl.value = "Users";
+            }
+
+            
+        }
+
+        document.addEventListener("DOMContentLoaded", init);
     </script>
 </body>
 </html>

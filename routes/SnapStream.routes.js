@@ -247,7 +247,7 @@ router.post("/:id/settings/profile", upload.single("profileImage"), async (req, 
         }
         
         foundUser.username = req.body.username;
-        foundUser.save();
+        await foundUser.save();
 
         res.redirect("/snap-stream/settings");
     }

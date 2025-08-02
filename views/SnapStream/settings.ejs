@@ -33,6 +33,12 @@
             <br>
 
             <button type="submit">Update Profile</button>
+            <br>
+            <hr>
+        </form>
+
+        <form action="/snap-stream/<%= foundUser._id %>/settings/profile?_method=DELETE" method="post">
+            <button type="submit" style="color: red;">Delete Account</button>
         </form>
     </div>
 

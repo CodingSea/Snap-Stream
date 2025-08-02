@@ -72,9 +72,6 @@ router.post("/login", async (req, res) =>
         const validatePassword = bcrypt.compareSync(req.body.password, foundUser.password);
         if(foundUser && validatePassword)
         {
-            req.session.userId = foundUser._id;
-            req.session.isLoggedIn = true;
-
             req.session.user =
             {
                 email: foundUser.email,

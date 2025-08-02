@@ -256,6 +256,24 @@ router.post("/:id/settings/profile", upload.single("profileImage"), async (req, 
     }
 });
 
+router.delete("/:id/settings/profile", async (req, res) =>
+{
+    try
+    {
+        await Post.deleteMany({ user: req.session.user._id });
+
+        await User.findByIdAndDelete(req.session.user._id);
+
+        req.session.destroy();
+        
+        res.redirect("/");
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+});
+
 router.get("/home", isSignedIn, (req, res) => 
 {
     res.redirect("/snap-stream/home/" + req.session.user._id )

@@ -260,12 +260,31 @@ router.delete("/:id/settings/profile", async (req, res) =>
 {
     try
     {
+        const allPosts = await Post.find().populate("user").populate("comments.user");
+        allPosts.forEach((post) =>
+        {
+            post.comments.forEach((comment) =>
+            {
+                if(JSON.stringify(comment.user._id) == JSON.stringify(req.session.user._id))
+                {
+                    post.comments.splice(post.comments.indexOf(comment._id), 1);
+                }
+            });
+        });
+
+        const allUserPosts = await Post.find({user: req.session.user._id});
+        allUserPosts.forEach((foundPost) => 
+        {
+            if(JSON.stringify(foundPost.user._id) != JSON.stringify(req.session.user._id)) { return res.redirect("/"); }
+            cloudinary.uploader.destroy(foundPost.imageId);
+        });
+
         await Post.deleteMany({ user: req.session.user._id });
 
         await User.findByIdAndDelete(req.session.user._id);
 
         req.session.destroy();
-        
+
         res.redirect("/");
     }
     catch(error)

@@ -87,7 +87,11 @@
 
         <% foundPost.comments.forEach((comment) => { %>
             <div class="comment">
-                <p><b><%= comment.user.username %></b></p>
+                <% if(comment.user) { %>
+                    <p><b><%= comment.user.username %></b></p>
+                <% } else { %>
+                    <p><b>Deleted Account</b></p>
+                <% } %>
                 <p><%= comment.content %></p>
             </div>
         <% }); %>

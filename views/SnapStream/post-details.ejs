@@ -128,6 +128,7 @@
         {
             const allPostsArray = JSON.parse('<%- JSON.stringify(allPosts) %>');
             const currentPostId = '<%= foundPost._id %>';
+            const pageType = '<%= pageType %>';
             let nextPostIndex = -1;
             for (let index = 0; index < allPostsArray.length; index++) 
             {
@@ -142,7 +143,7 @@
 
             if (nextPostIndex < allPostsArray.length && nextPostIndex >= 0) 
             {
-                window.location.href = "/snap-stream/" + allPostsArray[nextPostIndex]._id;
+                window.location.href = "/snap-stream/" + allPostsArray[nextPostIndex]._id + "/" + pageType;
             } 
         }
 

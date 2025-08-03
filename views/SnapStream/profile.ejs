@@ -45,7 +45,13 @@
             <% allPosts.forEach((post) => { %>
                 <div class="post-card">
                     <a href="/snap-stream/<%= post._id %>/profile">
-                        <img src="<%= post.image %>" alt="post-image">
+                        <% if(post.image.includes("video")) { %>
+                            <video controls>
+                                <source src="<%= post.image %>" type="video/mp4">
+                            </video>
+                        <% } else { %>
+                            <img src="<%= post.image %>" alt="post-image">
+                        <% } %>
                     </a>
                 </div>
             <% }); %>

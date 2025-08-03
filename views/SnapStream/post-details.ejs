@@ -80,6 +80,8 @@
             <% foundPost.tags.forEach((tag) => { %>
                 <p><%= tag %></p>
             <% }); %>
+
+            <p class="createdAt"><%= foundPost.createdAt.toLocaleDateString() %> %></p>
         <% } %>
         
 

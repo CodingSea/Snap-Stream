@@ -42,7 +42,7 @@ router.get("/profile/:id", async (req, res) =>
 
         const currentUser = await User.findById(req.session.user._id);
         const foundUser = await User.findById(req.params.id);
-        let allPosts = await Post.find({user: req.params.id});
+        let allPosts = await Post.find({user: req.params.id}).sort({createdAt: -1});
         let isFollowed = false;
 
         const userInfo = 
@@ -168,7 +168,7 @@ router.get("/search", async (req, res) =>
 {
     try
     {
-        const allPosts = await Post.find();
+        const allPosts = await Post.find().sort({createdAt: -1});
         const allUsers = await User.find();
         let currentUser;
         let userInfo;
@@ -206,7 +206,6 @@ router.get("/:id/settings", isSignedIn, async (req, res) =>
     {
         const foundUser = await User.findById(req.params.id);
         const currentUser = foundUser;
-        let allPosts = await Post.find();
 
         const userInfo = 
         {
@@ -236,7 +235,10 @@ router.post("/:id/settings/profile", upload.single("profileImage"), async (req, 
             {
                 console.log(result, error);
             });
-
+        }
+  
+        if(req.body.profileImage)
+        {
             // taken from the internet
             const b64 = Buffer.from(req.file.buffer).toString("base64");
             let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
@@ -261,7 +263,7 @@ router.delete("/:id/settings/profile", async (req, res) =>
 {
     try
     {
-        const allPosts = await Post.find().populate("user").populate("comments.user");
+        const allPosts = await Post.find({user: req.session.user._id}).populate("user").populate("comments.user");
         const foundUser = await User.findById(req.session.user._id).populate("following").populate("followers");
 
         foundUser.following.forEach( async (u) =>
@@ -284,15 +286,6 @@ router.delete("/:id/settings/profile", async (req, res) =>
             cloudinary.uploader.destroy(foundPost.imageId);
         });
 
-        allPosts.forEach((post) =>
-        {
-            if(post.likes.includes(req.session.user._id))
-            {
-                post.likes.splice(post.likes.indexOf(req.session.user._id, 1));
-                post.save();
-            }
-        });
-        
         await Post.deleteMany({ user: req.session.user._id });
 
         await User.findByIdAndDelete(req.session.user._id);
@@ -316,8 +309,8 @@ router.get("/home/:id", isSignedIn, async (req, res) =>
 {
     try
     {
-        const allPosts = await Post.find().populate("user");
         const currentUser = await User.findById(req.session.user._id).populate("following");
+        const allPosts = await Post.find({user: {$in: currentUser.following}}).populate("user").sort({createdAt: -1});
         
         const userInfo = 
         {
@@ -326,20 +319,8 @@ router.get("/home/:id", isSignedIn, async (req, res) =>
             followers: currentUser.followers.length
         }
 
-        let posts = [];
-
-        currentUser.following.forEach((u) => 
-        {
-            allPosts.forEach((post) => 
-            {
-                if(JSON.stringify(u._id) === JSON.stringify(post.user._id))
-                {
-                    posts.push(post);
-                }
-            });
-        })
-
-        res.render("SnapStream/homepage.ejs", { posts, allPosts, currentUser, userInfo });
+        lastPage = "/snap-stream/home/" + req.params.id;
+        res.render("SnapStream/homepage.ejs", { allPosts, currentUser, userInfo });
     }
     catch(error)
     {
@@ -364,7 +345,7 @@ router.get("/:id/profile", async (req, res) =>
     try
     {
         const foundPost = await Post.findById(req.params.id).populate("user").populate("comments.user");
-        let allPosts = await Post.find({ user: req.session.user._id }).populate("user");
+        let allPosts = await Post.find({ user: req.session.user._id }).sort({createdAt: -1}).populate("user");
         let isUserPost = false;
         let isUser = false;
         let currentUser;

@@ -90,8 +90,10 @@
         <% foundPost.comments.forEach((comment) => { %>
             <div class="comment">
                 <% if(comment.user) { %>
+                    <img src="<%= comment.user.profileImage %>">  
                     <p><b><%= comment.user.username %></b></p>
                 <% } else { %>
+                    <img src="/images/person.png">  
                     <p><b>Deleted Account</b></p>
                 <% } %>
                 <p><%= comment.content %></p>

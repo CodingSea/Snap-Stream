@@ -18,7 +18,7 @@ h1
     font-size: 4em;
 }
 
-.main button
+.main button:not(#frmBtn)
 {
     width: 10em;
     font-size: 1.5em;
@@ -39,4 +39,19 @@ button
     margin-bottom: 0.5em;
     border-radius: 3px;
     border: 1px solid gray;
+}
+
+form
+{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1em;
+    width: 50%;
+    margin: 0 auto;
+}
+
+form button
+{
+    grid-column: span 2;
+    width: 100%;
 }

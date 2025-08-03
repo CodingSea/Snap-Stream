@@ -14,14 +14,11 @@ router.post("/sign-up", async (req, res) =>
     {
         if(!validator.isEmail(req.body.email))
         {
-            return res.send("Enter the full email correctly");
+            return res.render("Auth/sign-up.ejs", {errorMessage: "Enter the full email correctly."});
         }
 
         const foundUserEmail = await User.find({email: req.body.email});
         const foundUserUsername = await User.find({username: req.body.username});
-        console.log(req.body);
-        console.log(foundUserEmail);
-        console.log(foundUserUsername);
         if(foundUserEmail.length > 0)
         {
             return res.render("Auth/sign-up.ejs", {errorMessage: "Email is taken, try entering a new Email."});

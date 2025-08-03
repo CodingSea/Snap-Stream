@@ -186,8 +186,10 @@ router.get("/search", async (req, res) =>
 
             }
         }
+                if(!req.query.search){ req.query.search=null}
+
         lastPage = "/snap-stream/search";
-        res.render("SnapStream/search.ejs", { foundUser: req.session.user, allPosts, currentUser, userInfo, allUsers, showPosts });
+        res.render("SnapStream/search.ejs", { foundUser: req.session.user, allPosts, currentUser, userInfo, allUsers, showPosts,query:req.query.search  });
     }
     catch (error)
     {
@@ -400,6 +402,7 @@ router.get("/:id/search", async (req, res) =>
     {
         const foundPost = await Post.findById(req.params.id).populate("user").populate("comments.user");
         let allPosts = await Post.find().populate("user");
+        let allUsers = await User.find();
         let isUserPost = false;
         let isUser = false;
         let currentUser;
@@ -420,7 +423,28 @@ router.get("/:id/search", async (req, res) =>
             }
             isLiked = foundPost.likes.includes(req.session.user._id);
         }
-        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked, currentUser, userInfo, allPosts, pageType });
+
+        
+
+        if(!req.query.q)
+        {
+            req.query.q = null;
+        }
+        else
+        {
+            let searchInput;
+            if(req.query.q)
+            {
+                searchInput = req.query.q;
+                if(searchInput != "")
+                {
+                    allPosts = allPosts.filter(x => x.tags.some(y => y.includes(searchInput)));
+                    allUsers = allUsers.filter(x => x.username.includes(searchInput));
+                }
+            }
+        }
+
+        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked, currentUser, userInfo, allPosts, allUsers, pageType, query:req.query.q  });
     }
     catch (error)
     {
@@ -552,7 +576,9 @@ router.post("/:id/like", async (req, res) =>
     }
 });
 
-router.post("/search/posts", async (req, res) =>
+
+
+router.get("/search/posts", async (req, res) =>
 {
     try
     {
@@ -561,14 +587,7 @@ router.post("/search/posts", async (req, res) =>
         let currentUser;
         let userInfo;
         let showPosts = true;
-        if(req.body.showType == "Posts")
-        {
-            showPosts = true;
-        }
-        else
-        {
-            showPosts = false;
-        }
+        
         
         if(req.session.user)
         {
@@ -582,7 +601,7 @@ router.post("/search/posts", async (req, res) =>
             }
         }
 
-        const searchInput = req.body.search;
+        const searchInput = req.query.search;
 
         if(searchInput != "")
         {
@@ -590,14 +609,16 @@ router.post("/search/posts", async (req, res) =>
             allUsers = allUsers.filter(x => x.username.includes(searchInput));
         }
 
-
-        lastPage = "/snap-stream/search";
-        res.render("SnapStream/search.ejs", { foundUser: req.session.user, allPosts, currentUser, userInfo, allUsers, showPosts });
+        if(!req.query.search) req.query.search = null
+        lastPage = "/snap-stream/search/posts?search=" + req.query.search;
+        res.render("SnapStream/search.ejs", { foundUser: req.session.user, allPosts, currentUser, userInfo, allUsers, showPosts,query:req.query.search });
     }
     catch(error)
     {
         console.log(error);
     }
 });
+
+
 
 module.exports = router;

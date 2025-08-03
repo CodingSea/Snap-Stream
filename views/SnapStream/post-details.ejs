@@ -147,7 +147,14 @@
 
             if (nextPostIndex < allPostsArray.length && nextPostIndex >= 0) 
             {
-                window.location.href = "/snap-stream/" + allPostsArray[nextPostIndex]._id + "/" + pageType;
+                if('<%= query %>')
+                {
+                    window.location.href = "/snap-stream/" + allPostsArray[nextPostIndex]._id + "/" + pageType + "?q=" + '<%= query %>';
+                }
+                else
+                {
+                    window.location.href = "/snap-stream/" + allPostsArray[nextPostIndex]._id + "/" + pageType;
+                }
             } 
         }
 

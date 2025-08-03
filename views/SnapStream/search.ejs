@@ -12,13 +12,13 @@
 
     <div class="page">
         <header>
-            
-            
-            <form action="/snap-stream/search/posts" method="post">
-                <select id="showType" name="showType" onchange="handlsType(this)" onclick="handlsType(this)">
+            <select id="showType" name="showType" onchange="handlsType(this)" onclick="handlsType(this)">
                     <option value="Posts">Posts</option>
                     <option value="Users">Users</option>
                 </select>
+            
+            <form action="/snap-stream/search/posts?search" method="get">
+                
 
                 <input name="search" type="text" placeholder="Search...">
                 <button type="submit"><i class="fa fa-search"></i></button>
@@ -29,7 +29,14 @@
         
         <div class="container">
             <% allPosts.forEach((post) => { %>
-            <a href="/snap-stream/<%= post._id %>/search">
+                <% if(query){ %>
+            <a href="/snap-stream/<%= post._id %>/search?q=<%= query %>">
+
+                
+                <% } else{%>
+                <a href="/snap-stream/<%= post._id %>/search">
+
+                    <% }%>
             <div class="post-card">
                 <img src="<%= post.image %>" alt="post-image">
             </div>

@@ -46,7 +46,7 @@
                 <div class="post-card">
                     <a href="/snap-stream/<%= post._id %>/profile">
                         <% if(post.image.includes("video")) { %>
-                            <video controls>
+                            <video>
                                 <source src="<%= post.image %>" type="video/mp4">
                             </video>
                         <% } else { %>

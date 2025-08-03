@@ -36,7 +36,7 @@
                         <% }%>
                         <div class="post-card">
                             <% if(post.image.includes("video")) { %>
-                                <video controls>
+                                <video>
                                     <source src="<%= post.image %>" type="video/mp4">
                                 </video>
                             <% } else { %>
@@ -63,7 +63,13 @@
                         <a href="/snap-stream/<%= post._id %>/search">
                         <% }%>
                         <div class="post-card">
-                            <img src="<%= post.image %>" alt="post-image">
+                            <% if(post.image.includes("video")) { %>
+                                <video>
+                                    <source src="<%= post.image %>" type="video/mp4">
+                                </video>
+                            <% } else { %>
+                                <img src="<%= post.image %>" alt="post-image">
+                            <% } %>
                         </div>
                     </a>
             <% }); %>`;

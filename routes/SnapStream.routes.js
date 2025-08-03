@@ -441,8 +441,6 @@ router.get("/:id/home", async (req, res) =>
     try
     {
         const foundPost = await Post.findById(req.params.id).populate("user").populate("comments.user");
-        // this line is taken from the internet
-        
         let allPosts;
         let isUserPost = false;
         let isUser = false;
@@ -456,6 +454,7 @@ router.get("/:id/home", async (req, res) =>
             isUser = true;
 
             currentUser = await User.findById(req.session.user._id);
+            // this line is taken from the internet
             const followingUsers = currentUser.following.map(u => u._id);
             allPosts =  await Post.find({ user: { $in: followingUsers } }).sort({createdAt: -1}).populate("user");
             userInfo = 

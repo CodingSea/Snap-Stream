@@ -235,8 +235,8 @@ router.post("/:id/settings/profile", upload.single("profileImage"), async (req, 
                 console.log(result, error);
             });
         }
-  
-        if(req.body.profileImage)
+        
+        if(req.file)
         {
             // taken from the internet
             const b64 = Buffer.from(req.file.buffer).toString("base64");

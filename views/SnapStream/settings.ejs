@@ -14,9 +14,9 @@
         
         <h1>Settings</h1>
         <% if(foundUser.profileImage) {%>
-            <img src="<%= foundUser.profileImage %>">
+            <img src="<%= foundUser.profileImage %>" id="profileImage">
         <% } else { %>
-            <img src="/images/person.png">
+            <img src="/images/person.png" id="profileImage">
         <% } %>
         
         <form action="/snap-stream/<%= foundUser._id %>/settings/profile" method="post" enctype="multipart/form-data">

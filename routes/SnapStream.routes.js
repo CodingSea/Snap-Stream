@@ -105,8 +105,7 @@ router.get("/new", isSignedIn, async (req, res) =>
 {
     try
     {
-        const currentUser = await User.findById(req.session.user._id);;
-        let allPosts = await Post.find();
+        const currentUser = await User.findById(req.session.user._id);
 
         const userInfo = 
         {
@@ -263,7 +262,6 @@ router.delete("/:id/settings/profile", async (req, res) =>
 {
     try
     {
-        const allPosts = await Post.find({user: req.session.user._id}).populate("user").populate("comments.user");
         const foundUser = await User.findById(req.session.user._id).populate("following").populate("followers");
 
         foundUser.following.forEach( async (u) =>
@@ -443,7 +441,9 @@ router.get("/:id/home", async (req, res) =>
     try
     {
         const foundPost = await Post.findById(req.params.id).populate("user").populate("comments.user");
-        let allPosts = await Post.find().sort({createdAt: -1}).populate("user");
+        // this line is taken from the internet
+        
+        let allPosts;
         let isUserPost = false;
         let isUser = false;
         let currentUser;
@@ -456,27 +456,14 @@ router.get("/:id/home", async (req, res) =>
             isUser = true;
 
             currentUser = await User.findById(req.session.user._id);
+            const followingUsers = currentUser.following.map(u => u._id);
+            allPosts =  await Post.find({ user: { $in: followingUsers } }).sort({createdAt: -1}).populate("user");
             userInfo = 
             {
                 posts: await Post.countDocuments({user: req.session.user._id}),
                 following: currentUser.following.length,
                 followers: currentUser.followers.length
             }
-
-            let posts = [];
-
-            currentUser.following.forEach((u) => 
-            {
-                allPosts.forEach((post) => 
-                {
-                    if(JSON.stringify(u._id) === JSON.stringify(post.user._id))
-                    {
-                        posts.push(post);
-                    }
-                });
-            })
-
-            allPosts = posts;
 
             isLiked = foundPost.likes.includes(req.session.user._id);
         }

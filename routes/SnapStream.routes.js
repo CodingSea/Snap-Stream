@@ -383,7 +383,7 @@ router.get("/:id/search", async (req, res) =>
     try
     {
         const foundPost = await Post.findById(req.params.id).populate("user").populate("comments.user");
-        let allPosts = await Post.find().populate("user");
+        let allPosts = await Post.find().sort({createdAt: -1}).populate("user");
         let allUsers = await User.find();
         let isUserPost = false;
         let isUser = false;

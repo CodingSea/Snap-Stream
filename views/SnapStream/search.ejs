@@ -30,17 +30,20 @@
         <div class="container">
             <% allPosts.forEach((post) => { %>
                 <% if(query){ %>
-            <a href="/snap-stream/<%= post._id %>/search?q=<%= query %>">
-
-                
-                <% } else{%>
-                <a href="/snap-stream/<%= post._id %>/search">
-
-                    <% }%>
-            <div class="post-card">
-                <img src="<%= post.image %>" alt="post-image">
-            </div>
-            </a>
+                    <a href="/snap-stream/<%= post._id %>/search?q=<%= query %>">
+                    <% } else{%>
+                        <a href="/snap-stream/<%= post._id %>/search">
+                        <% }%>
+                        <div class="post-card">
+                            <% if(post.image.includes("video")) { %>
+                                <video controls>
+                                    <source src="<%= post.image %>" type="video/mp4">
+                                </video>
+                            <% } else { %>
+                                <img src="<%= post.image %>" alt="post-image">
+                            <% } %>
+                        </div>
+                    </a>
             <% }); %>
         </div>
     </div>
@@ -54,12 +57,16 @@
             if(showTypeEl.value == "Posts")
             {
                 containerEl.innerHTML = `<% allPosts.forEach((post) => { %>
-                    <a href="/snap-stream/<%= post._id %>/search">
-                    <div class="post-card">
-                        <img src="<%= post.image %>" alt="post-image">
-                    </div>
+                <% if(query){ %>
+                    <a href="/snap-stream/<%= post._id %>/search?q=<%= query %>">
+                    <% } else{%>
+                        <a href="/snap-stream/<%= post._id %>/search">
+                        <% }%>
+                        <div class="post-card">
+                            <img src="<%= post.image %>" alt="post-image">
+                        </div>
                     </a>
-                <% }); %>`;
+            <% }); %>`;
             }
             else
             {

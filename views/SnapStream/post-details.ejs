@@ -24,7 +24,14 @@
             <a href="/snap-stream/profile/<%= foundPost.user._id %>"><h1><%= foundPost.user.username %></h1></a>
         </div>
 
-        <img src="<%= foundPost.image %>">
+        <% if(foundPost.image.includes("video")) { %>
+            <video controls>
+                <source src="<%= foundPost.image %>" type="video/mp4">
+            </video>
+        <% } else { %>
+            <img src="<%= foundPost.image %>" alt="post-image">
+        <% } %>
+        
 
         <% if(isUser) { %>
 

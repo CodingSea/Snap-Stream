@@ -19,19 +19,16 @@ router.post("/sign-up", async (req, res) =>
 
         const foundUserEmail = await User.find({email: req.body.email});
         const foundUserUsername = await User.find({username: req.body.username});
-        if(foundUserEmail)
+        console.log(req.body);
+        console.log(foundUserEmail);
+        console.log(foundUserUsername);
+        if(foundUserEmail.length > 0)
         {
-            if(foundUserEmail.email == req.body.email)
-            {
-                return res.render("Auth/sign-up.ejs", {errorMessage: "Email is taken, try entering a new Email."});
-            }
+            return res.render("Auth/sign-up.ejs", {errorMessage: "Email is taken, try entering a new Email."});
         }
-        if(foundUserUsername)
+        if(foundUserUsername.length > 0)
         {
-            if(foundUserUsername.username == req.body.username)
-            {
-                return res.render("Auth/sign-up.ejs", {errorMessage: "Username is taken, try entering a new username."});
-            }
+            return res.render("Auth/sign-up.ejs", {errorMessage: "Username is taken, try entering a new username."});
         }
 
 

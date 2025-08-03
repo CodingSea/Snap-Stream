@@ -1,0 +1,42 @@
+.main
+{
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1
+{
+    font-size: 4em;
+}
+
+#name
+{
+    font-family: "Satisfy", cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 4em;
+}
+
+.main button
+{
+    width: 10em;
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+    border-radius: 3px;
+    border: 1px solid gray;
+}
+
+.main button:hover
+{
+    background-color: darkgray;
+}
+
+button
+{
+    width: 10em;
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+    border-radius: 3px;
+    border: 1px solid gray;
+}

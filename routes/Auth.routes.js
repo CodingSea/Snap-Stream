@@ -5,7 +5,7 @@ const validator = require("validator");
 
 router.get("/sign-up", (req, res) =>
 {
-    res.render("Auth/sign-up.ejs");
+    res.render("Auth/sign-up.ejs", {errorMessage: ""});
 });
 
 router.post("/sign-up", async (req, res) =>
@@ -23,14 +23,14 @@ router.post("/sign-up", async (req, res) =>
         {
             if(foundUserEmail.email == req.body.email)
             {
-                return res.send("email is taken, try entering a new email.");
+                return res.render("Auth/sign-up.ejs", {errorMessage: "Email is taken, try entering a new Email."});
             }
         }
         if(foundUserUsername)
         {
             if(foundUserUsername.username == req.body.username)
             {
-                return res.send("username is taken, try entering a new username.");
+                return res.render("Auth/sign-up.ejs", {errorMessage: "Username is taken, try entering a new username."});
             }
         }
 
@@ -56,7 +56,7 @@ router.post("/sign-up", async (req, res) =>
 
 router.get("/login", (req, res) =>
 {
-    res.render("Auth/login.ejs");
+    res.render("Auth/login.ejs", {errorMessage: ""});
 });
 
 router.post("/login", async (req, res) =>
@@ -83,7 +83,7 @@ router.post("/login", async (req, res) =>
         }
         else
         {
-            res.send("email or password is inccorect");
+            res.render("Auth/login.ejs", {errorMessage: "Incorrect Email or Password"});
         }
     }
     catch(error)

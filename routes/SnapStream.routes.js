@@ -42,12 +42,12 @@ router.get("/profile/:id", async (req, res) =>
 
         const currentUser = await User.findById(req.session.user._id);
         const foundUser = await User.findById(req.params.id);
-        let allPosts = await Post.find();
+        let allPosts = await Post.find({user: req.params.id});
         let isFollowed = false;
 
         const userInfo = 
         {
-            posts: allPosts.filter(x => x.user == req.session.user._id).length,
+            posts: await Post.countDocuments({user: req.session.user._id}),
             following: currentUser.following.length,
             followers: currentUser.followers.length
 
@@ -57,8 +57,6 @@ router.get("/profile/:id", async (req, res) =>
         {
             isFollowed = true;
         }
-        
-        allPosts = allPosts.filter(x => x.user == req.params.id);
 
         lastPage = "/snap-stream/profile/" + req.params.id;
         res.render("SnapStream/profile.ejs", { foundUser, allPosts, currentUser, userInfo, isFollowed });
@@ -112,7 +110,7 @@ router.get("/new", isSignedIn, async (req, res) =>
 
         const userInfo = 
         {
-            posts: allPosts.filter(x => x.user == req.session.user._id).length,
+            posts: await Post.countDocuments({user: req.session.user._id}),
             following: currentUser.following.length,
             followers: currentUser.followers.length
 
@@ -180,7 +178,7 @@ router.get("/search", async (req, res) =>
             currentUser = await User.findById(req.session.user._id);
             userInfo = 
             {
-                posts: allPosts.filter(x => x.user == req.session.user._id).length,
+                posts: await Post.countDocuments({user: req.session.user._id}),
                 following: currentUser.following.length,
                 followers: currentUser.followers.length
 
@@ -212,7 +210,7 @@ router.get("/:id/settings", isSignedIn, async (req, res) =>
 
         const userInfo = 
         {
-            posts: allPosts.filter(x => x.user == req.session.user._id).length,
+            posts: await Post.countDocuments({user: req.session.user._id}),
             following: currentUser.following.length,
             followers: currentUser.followers.length
 
@@ -323,7 +321,7 @@ router.get("/home/:id", isSignedIn, async (req, res) =>
         
         const userInfo = 
         {
-            posts: allPosts.filter(x => x.user._id == req.params.id).length,
+            posts: await Post.countDocuments({user: req.session.user._id}),
             following: currentUser.following.length,
             followers: currentUser.followers.length
         }
@@ -366,7 +364,7 @@ router.get("/:id/profile", async (req, res) =>
     try
     {
         const foundPost = await Post.findById(req.params.id).populate("user").populate("comments.user");
-        let allPosts = await Post.find().populate("user");
+        let allPosts = await Post.find({ user: req.session.user._id }).populate("user");
         let isUserPost = false;
         let isUser = false;
         let currentUser;
@@ -381,14 +379,17 @@ router.get("/:id/profile", async (req, res) =>
             currentUser = await User.findById(req.session.user._id);
             userInfo = 
             {
-                posts: allPosts.filter(x => x.user._id == req.session.user._id).length,
+                posts: await Post.countDocuments({user: req.session.user._id}),
                 following: currentUser.following.length,
                 followers: currentUser.followers.length
             }
-            allPosts = allPosts.filter(x => x.user._id == req.session.user._id);
             isLiked = foundPost.likes.includes(req.session.user._id);
+            if(!req.query.q)
+            {
+                req.query.q = null;
+            }
         }
-        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked, currentUser, userInfo, allPosts, pageType });
+        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked, currentUser, userInfo, allPosts, pageType, query:req.query.q });
     }
     catch (error)
     {
@@ -417,14 +418,12 @@ router.get("/:id/search", async (req, res) =>
             currentUser = await User.findById(req.session.user._id);
             userInfo = 
             {
-                posts: allPosts.filter(x => x.user._id == req.session.user._id).length,
+                posts: await Post.countDocuments({user: req.session.user._id}),
                 following: currentUser.following.length,
                 followers: currentUser.followers.length
             }
             isLiked = foundPost.likes.includes(req.session.user._id);
         }
-
-        
 
         if(!req.query.q)
         {
@@ -438,8 +437,14 @@ router.get("/:id/search", async (req, res) =>
                 searchInput = req.query.q;
                 if(searchInput != "")
                 {
-                    allPosts = allPosts.filter(x => x.tags.some(y => y.includes(searchInput)));
-                    allUsers = allUsers.filter(x => x.username.includes(searchInput));
+                    allPosts = await Post.find({$or: 
+                        [
+                            { content: {$regex: searchInput, $options:"i"} },
+                            { tags: {$regex: searchInput, $options:"i"} }
+                        ]
+                    });
+
+                    allUsers = await User.find({ username: {$regex: searchInput, $options:"i"} });
                 }
             }
         }
@@ -472,7 +477,7 @@ router.get("/:id/home", async (req, res) =>
             currentUser = await User.findById(req.session.user._id);
             userInfo = 
             {
-                posts: allPosts.filter(x => x.user._id == req.session.user._id).length,
+                posts: await Post.countDocuments({user: req.session.user._id}),
                 following: currentUser.following.length,
                 followers: currentUser.followers.length
             }
@@ -494,7 +499,12 @@ router.get("/:id/home", async (req, res) =>
 
             isLiked = foundPost.likes.includes(req.session.user._id);
         }
-        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked, currentUser, userInfo, allPosts, pageType });
+
+        if(!req.query.q)
+        {
+            req.query.q = null;
+        }
+        res.render("SnapStream/post-details.ejs", { foundPost, isUserPost, isUser, isLiked, currentUser, userInfo, allPosts, pageType, query:req.query.q });
     }
     catch (error)
     {
@@ -582,19 +592,18 @@ router.get("/search/posts", async (req, res) =>
 {
     try
     {
-        let allPosts = await Post.find();
-        let allUsers = await User.find();
+        let allPosts;
+        let allUsers;
         let currentUser;
         let userInfo;
         let showPosts = true;
-        
         
         if(req.session.user)
         {
             currentUser = await User.findById(req.session.user._id);
             userInfo = 
             {
-                posts: allPosts.filter(x => x.user == req.session.user._id).length,
+                posts: await Post.countDocuments({user: req.session.user._id}),
                 following: currentUser.following.length,
                 followers: currentUser.followers.length
 
@@ -605,8 +614,18 @@ router.get("/search/posts", async (req, res) =>
 
         if(searchInput != "")
         {
-            allPosts = allPosts.filter(x => x.tags.some(y => y.includes(searchInput)));
-            allUsers = allUsers.filter(x => x.username.includes(searchInput));
+            allPosts = await Post.find({$or: 
+                [
+                    { content: {$regex: searchInput, $options:"i"} },
+                    { tags: {$regex: searchInput, $options:"i"} }
+                ]
+            });
+
+            allUsers = await User.find({ username: {$regex: searchInput, $options:"i"} });
+        }
+        else
+        {
+            res.redirect("/snap-stream/search");
         }
 
         if(!req.query.search) req.query.search = null

@@ -13,28 +13,23 @@
         <button class="backBtn" type="submit">Back</button>
     </form>
 
-    <div class="page new">
+    <div class="new">
         <h1>Create a Post</h1>
     
         <form action="/snap-stream/new" method="post" enctype="multipart/form-data">
-            <div class="row">
-                <label for="image">Post: </label>
-                <input name="image" type="file" required>
-            </div>
+            <label for="image">Post: </label>
+            <input name="image" type="file" required>
 
-            <div class="row">
-                <label for="content">Content: </label>
-                <input name="content" type="texts">
-            </div>
+            <label for="content">Content: </label>
+            <input name="content" type="texts">
 
 
-            <div class="row">
-                <button>Upload Post</button>
-            </div>
-            <div class="row">
-                <label for="tag">Tags: </label>
-                <input name="tag" type="texts" id="tagInput">
-            </div>
+            <button class="row">Upload Post</button>
+
+            <hr class="row">
+
+            <label for="tag">Tags: </label>
+            <input name="tag" type="texts" id="tagInput" class="tagSize">
             <div id="tagList" class="row">
                 
             </div>
@@ -49,8 +44,8 @@
             const tagInputEl = document.querySelector("#tagInput");
             const tagListEl = document.querySelector("#tagList");
             
-            tagListEl.innerHTML += `<label for="tag_${i}"></label>
-            <input name="tag_${i}" value="${tagInputEl.value}">`;
+            tagListEl.innerHTML += `<label for="tag_${i}" class="tagSize"></label>
+            <input name="tag_${i}" value="${tagInputEl.value}" class="tagSize">`;
             i++;
             tagInputEl.value = "";
             

@@ -7,7 +7,7 @@ body
 
 .tabsContainer
 {
-    border: 1px solid black;
+    border: 1px solid gray;
     width: 20%;
     padding-bottom: 50%;
     margin: -1px;
@@ -241,19 +241,35 @@ header button:not(#searchBtn)
 
 .new
 {
-    width: 60%;
+    width: 40%;
     margin: 0 auto;
     text-align: center;
+    height: 100%;  
+}
+
+.new h1
+{
+    font-size: 3.5em;
+}
+
+.new form
+{
+    margin-top: 5em;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1em;
+    font-size: 1.5em;
 }
 
 .row
 {
-    margin-bottom: 1em;
+    grid-column: span 2;
 }
 
 .new button
 {
-    width: 20em;
+    width: 100%;
+    margin: 0 auto;
 }
 
 button:not(.postSwitchBtn)
@@ -272,7 +288,6 @@ button:hover
 
 .tabsRow
 {
-    display: flex;
     align-items: center;
     justify-content: center;
     gap: 1em;
@@ -299,4 +314,15 @@ h3
     margin: 1em;
     border-radius: 3px;
     border: 1px solid gray;
+}
+
+.new hr
+{
+    border: 1px solid gray;
+    width: 100%;
+}
+
+.tagSize
+{
+    font-size: 1em;
 }

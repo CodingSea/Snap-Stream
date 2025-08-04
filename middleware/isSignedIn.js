@@ -6,7 +6,7 @@ function isSignedIn(req, res, next)
     } 
     else
     {
-        res.redirect("/auth/login");
+        res.redirect("/");
     }
 }
 

@@ -62,9 +62,11 @@
             <br>
 
             <h3>Tags</h3>
-            <% foundPost.tags.forEach((tag) => { %>
-                <p><%= tag %></p>
-            <% }); %>
+            <div class="tags">
+                <% foundPost.tags.forEach((tag) => { %>
+                    <p class="tag"><%= tag %></p>
+                <% }); %>
+            </div>
 
             <br>
 
@@ -85,7 +87,7 @@
 
             <h3>Tags</h3>
             <% foundPost.tags.forEach((tag) => { %>
-                <p><%= tag %></p>
+                <p class="tag"><%= tag %></p>
             <% }); %>
 
             <p class="createdAt"><%= foundPost.createdAt.toLocaleDateString() %> %></p>
@@ -98,12 +100,12 @@
             <div class="comment">
                 <% if(comment.user) { %>
                     <img src="<%= comment.user.profileImage %>">  
-                    <p><b><%= comment.user.username %></b></p>
+                    <p class="commentName"><b><%= comment.user.username %></b></p>
                 <% } else { %>
                     <img src="/images/person.png">  
-                    <p><b>Deleted Account</b></p>
+                    <p class="commentName"><b>Deleted Account</b></p>
                 <% } %>
-                <p><%= comment.content %></p>
+                <p class="commentName"><%= comment.content %></p>
             </div>
         <% }); %>
 

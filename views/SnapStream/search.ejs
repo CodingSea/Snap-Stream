@@ -5,24 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snap Stream</title>
     <link rel="stylesheet" href="/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
 </head>
 <body>
     <%- include("../partials/tabs") %>
 
     <div class="page">
         <header>
-            <select id="showType" name="showType" onchange="handlsType(this)" onclick="handlsType(this)">
+            <div class="searchBar">
+                <select id="showType" name="showType" onchange="handlsType(this)" onclick="handlsType(this)">
                     <option value="Posts">Posts</option>
                     <option value="Users">Users</option>
                 </select>
-            
-            <form action="/snap-stream/search/posts?search" method="get">
                 
+                <form action="/snap-stream/search/posts?search" method="get">
+                    
 
-                <input name="search" type="text" placeholder="Search...">
-                <button type="submit" id="searchBtn"><i class="fa fa-search"></i></button>
-            </form>
+                    
+                        <input name="search" type="text" placeholder="Search...">
+                        <button type="submit" id="searchBtn"><i class="fa fa-search"></i></button>
+                    
+                </form>
+            </div>
 
             <a href="/snap-stream/new" class="addPost"><button>Add Post</button></a>
         </header>

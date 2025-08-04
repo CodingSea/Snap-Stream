@@ -195,17 +195,16 @@ header button:not(#searchBtn)
     width: 10em;
     font-size: 1.5em;
     margin-bottom: 0.5em;
-    border-radius: 3px;
     border: 1px solid gray; 
 }
 
 #searchBtn
 {
+    border-radius: 0.5em;
     width: 40px;
     aspect-ratio: 1 / 1;
     font-size: 1.5em;
     margin-bottom: 0.5em;
-    border-radius: 3px;
     border: 1px solid gray;
 }
 
@@ -279,7 +278,7 @@ button:not(.postSwitchBtn)
 {
     font-size: 1.5em;
     margin-bottom: 0.5em;
-    border-radius: 3px;
+    border-radius: 0.5em;
     border: 1px solid gray;
     box-sizing: border-box;
 }
@@ -328,4 +327,20 @@ hr
 .tagSize
 {
     font-size: 1em;
+}
+
+.searchBar
+{
+    display: inline;
+    width: 20em;
+}
+
+.searchBar #searchBtn
+{
+    
+}
+
+.searchBar input, .searchBar select
+{
+    border-radius: 0.5em;
 }

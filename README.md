@@ -28,6 +28,23 @@ The idea of this site if to post images/videos and be able to see other people p
 * mongoose
 * morgan
 
+## Getting Started
+
+Fork this repository and follow these steps to run the site:
+
+* install the packages: npm install
+* add the .env file and write this with your details:
+
+```
+DB=Database Url
+PORT= any number
+SECRET_SESSION= secret key
+CLOUDINARY_URL= cloudinary url
+CLOUDINARY_NAME= cloudinary database name
+CLOUDINARY_KEY= cloudinary key
+CLOUDINARY_SECRET= cloudinary secret key
+```
+
 ## Wins and Blockers
 
 **Wins include:**
@@ -44,6 +61,12 @@ The idea of this site if to post images/videos and be able to see other people p
 * Profile Description
 * Upload multiple images or videos to a single post.
 * Mobile Support
+
+## Top contributors:
+
+<a href="https://github.com/CodingSea">
+  <img src="https://avatars.githubusercontent.com/u/46266365?v=4" />
+</a>
 
 ## In Conclusion
 

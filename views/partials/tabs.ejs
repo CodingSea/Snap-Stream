@@ -1,12 +1,12 @@
 <div class="tabsContainer">
     <% if(currentUser){ %>
-        <h1><%= currentUser.username %></h1>
-
         <% if(currentUser.profileImage) { %>
-            <img src="<%= currentUser.profileImage %>" width="200px" height="200px" alt="post-image">
+            <img src="<%= currentUser.profileImage %>" width="200px" height="200px" alt="profile-image" style="margin-top: 1em;">
         <% } else { %>
-            <img src="/images/person.png" width="200px" height="200px" alt="post-image">
+            <img src="/images/person.png" width="200px" height="200px" alt="profile-image">
         <% } %>
+
+        <h1><%= currentUser.username %></h1>
     <% }%>
     
     <% if(userInfo) { %>

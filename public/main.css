@@ -290,3 +290,13 @@ h3
 {
     margin-bottom: 0;
 }
+
+.backBtn
+{
+    position: absolute;
+    width: 10em;
+    font-size: 1.5em;
+    margin: 1em;
+    border-radius: 3px;
+    border: 1px solid gray;
+}

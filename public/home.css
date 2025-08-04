@@ -1,8 +1,16 @@
+body
+{
+    background-color: #F6F4EB;
+}
+
 .main
 {
     width: 60%;
+    height: 100%;
+    align-self: stretch;
     margin: 0 auto;
     text-align: center;
+    background-color: #F6F4EB;
 }
 
 h1

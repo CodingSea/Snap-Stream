@@ -3,6 +3,7 @@ body
     padding: 0;
     margin: 0;
     display: flex;
+    background-color: #F6F4EB;
 }
 
 .tabsContainer
@@ -19,6 +20,7 @@ body
     border-radius: 0 2em 2em 0;
     overflow: hidden;
     background: rgb(209, 209, 209);
+    background-color: #91C8E4;
 }
 
 .tabsContainer img
@@ -194,7 +196,7 @@ header button:not(#searchBtn)
     font-size: 1.5em;
     margin-bottom: 0.5em;
     border-radius: 3px;
-    border: 1px solid gray;
+    border: 1px solid gray; 
 }
 
 #searchBtn
@@ -284,7 +286,7 @@ button:not(.postSwitchBtn)
 
 button:hover
 {
-    background-color: darkgray;
+    background-color: #749BC2;
 }
 
 .tabsRow

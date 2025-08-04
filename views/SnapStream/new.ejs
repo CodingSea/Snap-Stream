@@ -9,26 +9,32 @@
 <body>
     <%- include("../partials/tabs") %>
 
-    <div class="page">
+    <div class="page new">
         <h1>Create a Post</h1>
     
         <form action="/snap-stream/new" method="post" enctype="multipart/form-data">
-            <label for="image">Image: </label>
-            <input name="image" type="file" required>
+            <div class="row">
+                <label for="image">Post: </label>
+                <input name="image" type="file" required>
+            </div>
 
-            <label for="content">Content: </label>
-            <input name="content" type="texts">
+            <div class="row">
+                <label for="content">Content: </label>
+                <input name="content" type="texts">
+            </div>
 
-            <button>Upload Post</button>
-            <br>
-            <br>
-            <label for="tag">Tags: </label>
-            <input name="tag" type="texts" id="tagInput">
-            <div id="tagList">
+
+            <div class="row">
+                <button>Upload Post</button>
+            </div>
+            <div class="row">
+                <label for="tag">Tags: </label>
+                <input name="tag" type="texts" id="tagInput">
+            </div>
+            <div id="tagList" class="row">
                 
             </div>
-            <br>
-            <button type="button" id="tagBtn" onclick="addTag()">Add Tag</button>
+            <button type="button" id="tagBtn" onclick="addTag()" class="row">Add Tag</button>
         </form>
     </div>
 

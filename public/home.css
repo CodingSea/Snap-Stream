@@ -27,7 +27,7 @@ h1
     border: 1px solid gray;
 }
 
-.main button:hover
+button:hover
 {
     background-color: darkgray;
 }

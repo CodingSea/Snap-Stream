@@ -62,8 +62,10 @@ CLOUDINARY_SECRET= cloudinary secret key
 * Upload multiple images or videos to a single post.
 * Mobile Support
 * Admin control pages
+* Texting other users
 
-## Top contributors:
+
+# Top contributors:
 
 <a href="https://github.com/CodingSea">
   <img src="https://avatars.githubusercontent.com/u/46266365?v=4" />

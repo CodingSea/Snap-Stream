@@ -61,6 +61,7 @@ CLOUDINARY_SECRET= cloudinary secret key
 * Profile Description
 * Upload multiple images or videos to a single post.
 * Mobile Support
+* Admin control pages
 
 ## Top contributors:
 
